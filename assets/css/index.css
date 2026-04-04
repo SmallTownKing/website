@@ -120,6 +120,7 @@
             justify-content: space-between;
             align-items: center;
             height: 100%;
+            position: relative;
         }
 
         .header-logo-img {
@@ -132,6 +133,47 @@
             align-items: center;
             gap: 48px;
             height: 64px;
+        }
+
+        .header-menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .header-menu-toggle span {
+            width: 18px;
+            height: 2px;
+            border-radius: 999px;
+            background-color: #1F2329;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .header.menu-open {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header.menu-open .header-menu-toggle span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .header.menu-open .header-menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .header.menu-open .header-menu-toggle span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
         }
 
         .nav ul {
@@ -183,6 +225,48 @@
             background-size: 100% 820px;
             position: relative;
             height: 620px;
+        }
+
+        .hero-content {
+            position: relative;
+            top: 64px;
+            padding-top: 88px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-eyebrow {
+            background-image: linear-gradient(0deg, #23B2FF 0%, #6C57FF 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            font-size: 48px;
+            height: 72px;
+            line-height: 72px;
+            font-weight: 700;
+        }
+
+        .hero-heading {
+            margin-top: 8px;
+            color: #1F2329;
+            font-size: 40px;
+            font-weight: 700;
+            height: 60px;
+            line-height: 60px;
+        }
+
+        .hero-summary {
+            width: 906px;
+            font-size: 16px;
+            line-height: 32px;
+            color: #696969;
+            margin-top: 16px;
+        }
+
+        .hero-consult-btn {
+            margin-top: 32px;
         }
 
         .hero-cards-grid {
@@ -500,6 +584,8 @@
         }
 
         .cases-carousel {
+            --case-peek-space: 240px;
+            --case-slide-width: 800px;
             position: relative;
             overflow: hidden;
             padding: 0 24px;
@@ -507,20 +593,26 @@
 
         .carousel-track-inner {
             display: flex;
+            align-items: stretch;
             gap: 40px;
             transform: translateX(0);
             transition: transform 0.55s ease;
             will-change: transform;
         }
 
+        .carousel-track-inner.is-resetting {
+            transition: none !important;
+        }
+
         .case-items-wrapper {
-            flex: 0 0 calc((100% - 40px) / 2);
+            flex: 0 0 var(--case-slide-width);
             min-width: 0;
+            opacity: 1;
         }
 
         .case-article-card {
             width: 100%;
-            height: 400px;
+            height: 468px;
             border-radius: 32px;
             position: relative;
             padding: 40px 0 44px 40px;
@@ -844,14 +936,12 @@
             height: 64px;
         }
 
-        /* ==========================================================================
-           4. 预约表单 (Lead Gen) - 提取出的语义化类
-           ========================================================================== */
         .lead-gen-section {
             background-image: url('../images/bg2.png');
             height: 304px;
             padding: 64px 120px;
             box-sizing: border-box;
+            background-size: 100% 100%;
         }
 
         .lead-gen-title {
@@ -915,79 +1005,515 @@
             padding: 80px 120px 48px 120px;
 
         }
-    
 
-        /* ==========================================================================
-           响应式设计
-           ========================================================================== */
+        .footer-top {
+            display: flex;
+        }
+
+        .footer-brand {
+            width: 482px;
+            height: 100%;
+        }
+
+        .footer-logo {
+            width: 156px;
+            height: 24px;
+        }
+
+        .footer-brand-desc {
+            width: 288px;
+            min-height: 72px;
+            margin-top: 16px;
+            font-size: 12px;
+            line-height: 24px;
+            color: #696969;
+        }
+
+        .footer-column-contact {
+            width: 334px;
+        }
+
+        .footer-column-cert {
+            width: 296px;
+        }
+
+        .footer-column-wechat {
+            width: 88px;
+        }
+
+        .footer-column-title {
+            min-height: 22px;
+            color: #232323;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .footer-column-list {
+            margin-top: 16px;
+        }
+
+        .footer-column-item {
+            min-height: 22px;
+            font-size: 12px;
+            color: #696969;
+            display: flex;
+            align-items: center;
+            column-gap: 8px
+        }
+
+        .footer-column-item+.footer-column-item {
+            margin-top: 8px;
+        }
+
+        .footer-divider {
+            height: 40px;
+            border-bottom: 1px solid #E8E8E8;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+            color: #999999;
+            font-size: 12px;
+            line-height: 22px;
+            gap: 16px;
+        }
+
+        .floating-contact {
+            width: 56px;
+            height: 164px;
+            background: linear-gradient(360deg, #6C57FF 0%, #23B2FF 100%);
+            box-shadow: 0px 4px 10px 0px rgba(108, 87, 255, 0.2);
+            border-radius: 28px;
+            position: fixed;
+            top: 60%;
+            right: 40px;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .floating-contact-icon {
+            width: 48px;
+            height: 48px;
+            margin: 4px 4px 0 4px;
+        }
+
+        .floating-contact-text {
+            width: 18px;
+            margin: 0 19px;
+            font-size: 18px;
+            color: #FFF;
+            line-height: 22px;
+        }
+
+        body.mobile-menu-open {
+            overflow: hidden;
+        }
         @media (max-width: 1024px) {
+            .container {
+                padding-left: 32px;
+                padding-right: 32px;
+            }
+
+            .cases-carousel {
+                --case-peek-space: 160px;
+                --case-slide-width: calc(100% - var(--case-peek-space));
+            }
+
+            .carousel-track-inner {
+                gap: 24px;
+            }
+
+            .hero {
+                height: auto;
+                padding-bottom: 72px;
+                background-size: cover;
+                background-position: center top;
+            }
+
+            .hero-content {
+                top: 0;
+                padding: 152px 32px 0;
+            }
+
+            .hero-summary {
+                width: min(100%, 720px);
+            }
+
             .hero-cards-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 position: static;
                 transform: none;
                 width: 100%;
-                margin-top: 40px;
+                margin-top: 48px;
+                padding: 0 32px;
             }
 
             .section-title {
-                padding-top: 0;
+                margin: 120px 0 64px;
+            }
+
+            .section-title1,
+            .section-title2,
+            .capabilities-title,
+            .why-us-title,
+            .partners-title {
+                margin-bottom: 32px;
+            }
+
+            .issues-illustration-placeholder {
+                width: 100%;
+                max-width: 720px;
+            }
+
+            .issues-illustration-placeholder>img {
+                width: 280px;
+                height: auto;
+            }
+
+            .issue-card {
+                padding: 10px 18px;
+            }
+
+            .issue-card p {
+                height: auto;
             }
 
             .services-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                column-gap: 32px;
+                row-gap: 40px;
             }
 
-            .footer-content-grid {
-                grid-template-columns: 1fr 1fr;
+            .service-card-title,
+            .info-label,
+            .lead-gen-title,
+            .lead-gen-desc {
+                height: auto;
+            }
+
+            .service-card-desc,
+            .feature-desc {
+                font-size: 15px;
+                line-height: 28px;
+            }
+
+            .cap-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding-bottom: 80px;
+            }
+
+            .cap-card {
+                width: 100%;
+                height: auto;
+                min-height: 476px;
+            }
+
+            .info-desc {
+                height: auto;
+                line-height: 22px;
+            }
+
+            .why-us-container {
+                margin-top: 80px;
+            }
+
+            .why-us-banner {
+                width: 100%;
+                height: auto;
+                padding: 56px 32px;
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+
+            .feature-card {
+                width: calc(50% - 12px);
+                height: auto;
+                min-height: 0;
+            }
+
+            .partners-section {
+                height: auto;
+                padding: 80px 32px 72px;
+            }
+
+            .partners-grid-wrapper {
+                margin-top: 48px;
+                display: grid;
+                gap: 20px;
+            }
+
+            .partner-row-1,
+            .partner-row-2,
+            .partner-row-3 {
+                margin: 0;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px 28px;
+            }
+
+            .lead-gen-section {
+                height: auto;
+                padding: 56px 32px;
+            }
+
+            .lead-gen-desc {
+                line-height: 28px;
+            }
+
+            .lead-gen-form {
+                height: auto;
+                flex-wrap: wrap;
+                gap: 16px 24px;
+            }
+
+            .form-input {
+                /* flex: 1 1 260px; */
+                width: auto;
+            }
+
+            .footer {
+                height: auto;
+            }
+
+            .footer-main {
+                height: auto;
+                padding: 64px 32px 40px;
+            }
+
+            .footer-top {
+                flex-wrap: wrap;
+                gap: 32px 48px;
+            }
+
+            .footer-brand,
+            .footer-column-contact,
+            .footer-column-cert,
+            .footer-column-wechat {
+                width: calc(50% - 24px);
+            }
+
+            .footer-brand-desc {
+                width: 100%;
+                height: auto;
             }
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .header-menu-toggle {
+                display: inline-flex;
+            }
+
+            .header-actions {
+                position: absolute;
+                top: calc(100% + 12px);
+                left: 16px;
+                right: 16px;
+                height: auto;
+                padding: 20px;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 20px 40px rgba(15, 23, 42, 0.14);
+                display: none;
+                flex-direction: column;
+                gap: 20px;
+                align-items: stretch;
+            }
+
+            .header.menu-open .header-actions {
+                display: flex;
+            }
+
             .nav {
+                display: block;
+            }
+
+            .nav ul {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                height: auto;
+            }
+
+            .nav a {
+                height: auto;
+                line-height: 24px;
+                padding: 12px 0;
+                border-bottom: 1px solid #F0F2F5;
+            }
+
+            .nav a::after {
                 display: none;
             }
 
-            .hero-title {
-                font-size: 2rem;
+            .header-actions>.btn {
+                width: 100%;
+                height: 48px;
+                border-radius: 24px;
+            }
+
+            .hero {
+                text-align: left;
+                padding-bottom: 48px;
+            }
+
+            .hero-content {
+                align-items: flex-start;
+                padding: 112px 16px 0;
+            }
+
+            .hero-eyebrow {
+                font-size: 32px;
+                line-height: 40px;
+                height: auto;
+            }
+
+            .hero-heading {
+                margin-top: 12px;
+                font-size: 28px;
+                line-height: 38px;
+                height: auto;
+            }
+
+            .hero-summary {
+                width: 100%;
+                font-size: 15px;
+                line-height: 28px;
+            }
+
+            .hero-consult-btn {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .hero-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-top: 32px;
+                padding: 0 16px;
+            }
+
+            .hero-card {
+                padding: 20px 16px;
+            }
+
+            .hero-card:hover {
+                transform: none;
+                box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.06);
+            }
+
+            .hero-card-title,
+            .hero-card-desc,
+            .service-card-title,
+            .section-title,
+            .section-title1,
+            .section-title2,
+            .capabilities-title,
+            .why-us-title,
+            .partners-title {
+                height: auto;
+            }
+
+            .section-title,
+            .section-title1,
+            .section-title2,
+            .capabilities-title,
+            .why-us-title,
+            .partners-title {
+                margin: 72px 0 24px;
+                font-size: 28px;
+                line-height: 1.35;
+            }
+
+            .services {
+                padding-bottom: 64px;
             }
 
             .services-grid,
-            .cap-grid,
-            .why-grid,
-            .hero-cards-grid {
+            .cap-grid {
                 grid-template-columns: 1fr;
+                gap: 24px;
             }
 
-            .case-content-overlay {
+            .issues-illustration-placeholder {
                 width: 100%;
-                background: rgba(15, 23, 42, 0.8);
+                max-width: none;
+                height: auto;
+                display: grid;
+                gap: 12px;
+                justify-items: stretch;
             }
 
-            .lead-form {
-                flex-direction: column;
-                align-items: center;
+            .issues-illustration-placeholder>img {
+                width: min(100%, 240px);
+                margin: 0 auto 12px;
             }
 
-            .lead-form input {
-                width: 100%;
-            }
-
-            .footer-content-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .qr-placeholder {
-                margin: 0 auto 10px;
-            }
-
-            .social-icons {
+            .issue-card {
+                position: static;
+                transform: none;
+                margin: 0;
                 justify-content: center;
+                padding: 14px 16px;
+                border-radius: 20px;
+            }
+
+            .issue-card p {
+                font-size: 14px;
+                line-height: 22px;
+                text-align: center;
+            }
+
+            .capabilities-section {
+                margin-top: 72px;
+                padding-top: 64px;
+            }
+
+            .cap-card {
+                min-height: 0;
+                padding: 24px 20px 32px;
+                border-radius: 24px;
+            }
+
+            .card-icon-bg {
+                width: 88px;
+                height: auto;
+                top: 20px;
+                right: 20px;
+            }
+
+            .card-title {
+                margin: 24px 0 20px;
+                padding-right: 88px;
+                font-size: 26px;
+                line-height: 34px;
+                height: auto;
+            }
+
+            .info-desc {
+                margin-bottom: 20px;
+                line-height: 24px;
+            }
+
+            .consult-btn {
+                width: 100%;
+                height: 52px;
+                border-radius: 26px;
+            }
+
+            .consult-btn .btn-text {
+                font-size: 15px;
             }
 
             .cases-carousel {
@@ -995,35 +1521,70 @@
             }
 
             .case-items-wrapper {
-                flex-basis: 100%;
+                flex-basis: calc(100% - 64px);
             }
 
             .case-article-card {
-                min-height: 400px;
-                padding: 32px 24px 32px 24px;
+                min-height: 520px;
+                height: auto;
+                padding: 24px 20px 28px;
+                border-radius: 24px;
             }
 
             .case-content-overlay {
-    width: 100%;
-    height: 100%;
-    padding: 40px 0 44px 40px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 2;
-    border-radius: 32px;
-    background: transparent;
-    box-sizing: border-box;
-}
+                width: 100%;
+                height: 100%;
+                padding: 24px 20px 28px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 2;
+                border-radius: 24px;
+                background: transparent;
+                box-sizing: border-box;
+            }
+
+            .case-category-tag {
+                width: auto;
+                min-width: 88px;
+                padding: 0 16px;
+                height: 34px;
+                line-height: 34px;
+                border-radius: 0 24px 0 24px;
+                font-size: 14px;
+            }
+
+            .case-title {
+                font-size: 22px;
+                line-height: 30px;
+                padding-right: 88px;
+            }
 
             .case-description {
                 width: 100%;
                 max-width: none;
+                margin-top: 16px;
             }
 
             .case-metrics-list {
                 flex-wrap: wrap;
-                gap: 16px 24px;
+                margin-top: 24px;
+                gap: 16px 20px;
+            }
+
+            .metric-value {
+                font-size: 20px;
+                line-height: 28px;
+            }
+
+            .metric-label {
+                line-height: 20px;
+            }
+
+            .btn-case-detail {
+                width: 150px;
+                height: 44px;
+                font-size: 15px;
             }
 
             .carousel-nav-btn {
@@ -1039,5 +1600,139 @@
 
             .carousel-nav-btn-next {
                 right: 24px;
+            }
+
+            .carousel-dots {
+                margin-top: 16px;
+            }
+
+            .why-us-container {
+                margin-top: 72px;
+            }
+
+            .why-us-banner {
+                padding: 32px 20px;
+                gap: 16px;
+            }
+
+            .feature-card {
+                width: 100%;
+                padding: 32px 24px 24px;
+                border-radius: 20px;
+            }
+
+            .feature-title {
+                font-size: 20px;
+            }
+
+            .feature-desc {
+                margin-top: 12px;
+                font-size: 15px;
+                line-height: 28px;
+            }
+
+            .partners-section {
+                padding: 72px 16px 56px;
+            }
+
+            .partners-grid-wrapper {
+                margin-top: 32px;
+                gap: 16px;
+            }
+
+            .partner-row-1,
+            .partner-row-2,
+            .partner-row-3 {
+                gap: 16px;
+            }
+
+            .partner-logo {
+                width: calc(50% - 8px);
+                max-width: 160px;
+                height: auto;
+            }
+
+            .lead-gen-section {
+                padding: 40px 20px;
+            }
+
+            .lead-gen-title {
+                font-size: 28px;
+                line-height: 38px;
+            }
+
+            .lead-gen-desc {
+                margin-top: 12px;
+                font-size: 16px;
+                line-height: 26px;
+            }
+
+            .lead-gen-form {
+                margin-top: 20px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .form-input,
+            .btn-submit {
+                width: 100%;
+            }
+
+            .btn-submit {
+                font-size: 18px;
+            }
+
+            .footer-main {
+                padding: 48px 20px 28px;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .footer-brand,
+            .footer-column-contact,
+            .footer-column-cert,
+            .footer-column-wechat {
+                width: 100%;
+            }
+
+            .footer-divider {
+                height: 24px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 16px;
+            }
+
+            .floating-contact {
+                top: auto;
+                right: 16px;
+                bottom: 20px;
+                width: auto;
+                height: 52px;
+                border-radius: 999px;
+                padding: 0 18px;
+                transform: none;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .floating-contact-icon {
+                width: 36px;
+                height: 36px;
+                margin: 0;
+            }
+
+            .floating-contact-text {
+                display: none;
+                width: auto;
+                margin: 0;
+                font-size: 16px;
+                line-height: 20px;
             }
         }

@@ -20,8 +20,14 @@
                     <img src="/assets/images/logo.svg" alt="轻搭云科技" class="header-logo-img" />
                 </div>
             </div>
-            <div class="header-actions">
-                <nav class="nav">
+            <button class="header-menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"
+                aria-label="打开导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header-actions" id="site-nav">
+                <nav class="nav" aria-label="主导航">
                     <ul>
                         <li><a href="#" class="active">首页</a></li>
                         <li><a href="#cases">成功案例</a></li>
@@ -34,24 +40,12 @@
     </header>
     <main>
         <section class="hero">
-            <div
-                style="position: relative; top: 64px; padding-top: 88px; display: flex; flex-direction: column; align-items: center;">
-                <div style="
-  background-image: linear-gradient(0deg, #23B2FF 0%, #6C57FF 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent; 
-  font-size: 48px;
-  height: 72px;
-  line-height: 72px;
-  font-weight: 700;">专注企业级软件开发</div>
-                <div
-                    style="margin-top: 8px;color: #1F2329; font-size: 40px; font-weight: 700; height: 60px; line-height: 60px;">
-                    为各行业提供一站式数字化解决方案</div>
-                <div style="width: 906px; font-size: 16px; line-height: 32px; color:#696969 ; margin-top: 16px;">
+            <div class="hero-content">
+                <div class="hero-eyebrow">专注企业级软件开发</div>
+                <div class="hero-heading">为各行业提供一站式数字化解决方案</div>
+                <div class="hero-summary">
                     我们依托100%持证专家团队与标准化SOP交付体系，深耕新能源、跨境金融、智能制造、房地产、社会服务、医疗健康等领域， 已成功交付100+深度数字化服务案例</div>
-                <button class="btn btn-primary consult-btn" style="margin-top: 32px;">
+                <button class="btn btn-primary consult-btn hero-consult-btn">
                     <span class="btn-text">立即预约专家咨询</span>
                     <img class="btn-icon" src="/assets/images/go.png" alt="立即预约" />
                 </button>
@@ -464,45 +458,100 @@
 
     </main>
     <footer class="footer">
-        <div class="footer-main" >
-           <div style="display: flex;">
-             <div style="width: 482px; height: 100%;">
-                <img src="/assets/images/logo.svg" style="width: 156px; height: 24px;" />
-                <div style="width: 288px;height: 72px; margin-top: 16px; font-size: 12px; line-height: 24px; color: #696969;">
+        <div class="footer-main">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="/assets/images/logo.svg" alt="轻搭云科技" class="footer-logo" />
+                    <div class="footer-brand-desc">
                     深圳市轻搭云科技有限公司，专注于企业数字化建设。 官方认证交付服务商，致力于为企业打造随业务持续进化的数字基座。
+                    </div>
+                </div>
+                <div class="footer-column footer-column-contact">
+                    <div class="footer-column-title">联系方式</div>
+                    <div class="footer-column-list">
+                        <div class="footer-column-item">
+                            <img src="/assets/images/phone.svg" />
+                            <div>13023086670</div>
+                        </div>
+                        <div class="footer-column-item">
+                            <img src="/assets/images/email.svg" />
+                            <div>youwei@qindayun.cn</div>
+                        </div>
+                        <div class="footer-column-item">
+                            <img src="/assets/images/wechat.svg" />
+                            <div>gzsqyw</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-column footer-column-cert">
+                    <div class="footer-column-title">官方认证资质</div>
+                    <div class="footer-column-list">
+                        <div class="footer-column-item">
+                            <div style="width: 2px; height: 2px; border-radius: 50%; background-color: #696969;"></div>
+                            <div>PaaS交付认证</div>
+                        </div>
+                         <div class="footer-column-item">
+                            <div style="width: 2px; height: 2px; border-radius: 50%; background-color: #696969;"></div>
+                            <div>全代码开发规范</div>
+                        </div>
+                         <div class="footer-column-item">
+                            <div style="width: 2px; height: 2px; border-radius: 50%; background-color: #696969;"></div>
+                            <div>行业标杆服务商</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-column footer-column-wechat">
+                    <div class="footer-column-title">添加专家微信</div>
+                    <img src="/assets/images/code.png" />
                 </div>
             </div>
-            <div style="width: 334px; height: 100%;">
-                <div style="font-weight: 500; font-size: 14px;height: 22px; color: #232323;">联系方式</div>
-                <div style="height: 22px; margin-top: 16px; font-size: 12px; color: #696969;">联系方式</div>
-                <div style="height: 22px; margin-top: 8px;font-size: 12px;color: #696969;">联系方式</div>
-                <div style="height: 22px; margin-top: 8px;font-size: 12px;color: #696969;">联系方式</div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <div>© 2025 深圳市轻搭云科技有限公司. ALL RIGHTS RESERVED.</div>
+                <div>粤ICP备2026014454号-1</div>
             </div>
-            <div style="width: 296px; height: 100%;">
-                 <div style="font-weight: 500; font-size: 14px;height: 22px; color: #232323;">官方认证资质</div>
-                <div style="height: 22px; margin-top: 16px; font-size: 12px; color: #696969;">PaaS交付认证</div>
-                <div style="height: 22px; margin-top: 8px;font-size: 12px;color: #696969;">全代码开发规范</div>
-                <div style="height: 22px; margin-top: 8px;font-size: 12px;color: #696969;">行业标杆服务商</div>
-            </div>
-            <div style="width: 88px; height: 100%;">
-                 <div style="font-weight: 500; font-size: 14px;height: 22px; color: #232323;">添加专家微信</div>
-            </div>
-           </div>
-           <div style="height: 40px; border-bottom: 1px solid #E8E8E8;"></div>
-           <div style="display: flex; justify-content: space-between; margin-top: 24px; color: #999999; font-size: 12px; line-height: 22px;">
-            <div>© 2025 深圳市轻搭云科技有限公司. ALL RIGHTS RESERVED.</div>
-            <div>粤ICP备2026014454号-1</div>
-           </div>
         </div>
     </footer>
-    <div style="width: 56px;
-height: 164px;
-background: linear-gradient( 360deg, #6C57FF 0%, #23B2FF 100%);
-box-shadow: 0px 4px 10px 0px rgba(108,87,255,0.2);
-border-radius: 28px 28px 28px 28px; position: fixed; top: 50%; right: 40px;">
- <img src="/assets/images/kefu.png" style="width: 48px; height: 48px; margin: 4px 4px 0 4px;" />
- <div style="width: 18px; margin: 0 19px; font-size: 18px; color: #FFF; line-height: 22px;">联系我们</div>
-</div>
+    <div class="floating-contact" data-floating-contact>
+        <div class="floating-contact-panel" id="floating-contact-panel" hidden>
+            <div class="floating-contact-panel-header">
+                <div class="floating-contact-panel-label">请拨打官方电话</div>
+                <a class="floating-contact-panel-phone" href="tel:18000000000">18000000000</a>
+                <div class="floating-contact-panel-region">中国</div>
+            </div>
+            <div class="floating-contact-panel-body">
+                <div class="floating-contact-panel-main">
+                    <div class="floating-contact-panel-item">
+                        <div class="floating-contact-panel-item-icon">微</div>
+                        <div>
+                            <div class="floating-contact-panel-item-title">微信咨询</div>
+                            <div class="floating-contact-panel-item-desc">扫码添加企业微信，与业务代表开启交流</div>
+                        </div>
+                    </div>
+                    <div class="floating-contact-panel-qr">企业微信二维码<br />记得要换</div>
+                    <div class="floating-contact-panel-item">
+                        <div class="floating-contact-panel-item-icon">线</div>
+                        <div>
+                            <div class="floating-contact-panel-item-title">在线接洽</div>
+                            <div class="floating-contact-panel-item-desc">点击头像按钮，快速沟通对接</div>
+                        </div>
+                    </div>
+                    <div class="floating-contact-panel-item">
+                        <div class="floating-contact-panel-item-icon">约</div>
+                        <div>
+                            <div class="floating-contact-panel-item-title">预约咨询</div>
+                            <div class="floating-contact-panel-item-desc">留下您的联系方式，获取专属咨询服务</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="floating-contact-trigger" type="button" aria-expanded="false"
+            aria-controls="floating-contact-panel" aria-label="展开联系我们面板">
+            <img src="/assets/images/kefu.png" class="floating-contact-icon" alt="联系我们" />
+            <div class="floating-contact-text">联系我们</div>
+        </div>
+    </div>
 </body>
 
 </html>

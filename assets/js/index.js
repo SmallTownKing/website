@@ -6,16 +6,79 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function initHeader() {
     const header = document.getElementById("header");
+    const menuToggle = header ? header.querySelector(".header-menu-toggle") : null;
+    const mobileMenuQuery = window.matchMedia("(max-width: 768px)");
 
     if (!header) {
         return;
     }
 
+    const setMenuState = function (isOpen) {
+        header.classList.toggle("menu-open", isOpen);
+        document.body.classList.toggle("mobile-menu-open", isOpen && mobileMenuQuery.matches);
+
+        if (menuToggle) {
+            menuToggle.setAttribute("aria-expanded", String(isOpen));
+            menuToggle.setAttribute("aria-label", isOpen ? "收起导航菜单" : "打开导航菜单");
+        }
+    };
+
+    const closeMenu = function () {
+        setMenuState(false);
+    };
+
     const syncHeaderState = function () {
         header.classList.toggle("scrolled", window.scrollY > 24);
+
+        if (!header.classList.contains("menu-open")) {
+            document.body.classList.remove("mobile-menu-open");
+        }
     };
 
     window.addEventListener("scroll", syncHeaderState, { passive: true });
+
+    if (menuToggle) {
+        menuToggle.addEventListener("click", function () {
+            setMenuState(!header.classList.contains("menu-open"));
+        });
+
+        header.querySelectorAll(".nav a").forEach(function (link) {
+            link.addEventListener("click", closeMenu);
+        });
+
+        header.querySelectorAll(".header-actions > .btn").forEach(function (button) {
+            button.addEventListener("click", closeMenu);
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!mobileMenuQuery.matches || !header.classList.contains("menu-open")) {
+                return;
+            }
+
+            if (!header.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        });
+
+        window.addEventListener(
+            "resize",
+            debounce(function () {
+                if (!mobileMenuQuery.matches) {
+                    closeMenu();
+                }
+
+                syncHeaderState();
+            }, 120)
+        );
+    }
+
+    setMenuState(false);
     syncHeaderState();
 }
 
@@ -25,91 +88,92 @@ function initCasesCarousel() {
 
     document.querySelectorAll(".cases-carousel").forEach(function (carousel) {
         const track = carousel.querySelector(".carousel-track-inner");
-        const items = Array.from(track ? track.children : []);
+        const originalItems = Array.from(track ? track.children : []);
         const prevBtn = carousel.querySelector("[data-carousel-prev]");
         const nextBtn = carousel.querySelector("[data-carousel-next]");
         const section = carousel.closest("section");
         const dotsContainer = section ? section.querySelector("[data-carousel-dots]") : null;
 
-        if (!track || !items.length || !prevBtn || !nextBtn) {
+        if (!track || !originalItems.length || !prevBtn || !nextBtn) {
             return;
         }
 
-        let currentPage = 0;
+        const hasMultipleItems = originalItems.length > 1;
+        let items = originalItems.slice();
         let autoplayTimer = null;
         let dotButtons = [];
+        let currentPage = hasMultipleItems ? 1 : 0;
+        let isAnimating = false;
 
-        const getVisibleCount = function () {
-            return window.innerWidth <= 900 ? 1 : 2;
-        };
+        if (hasMultipleItems) {
+            const firstClone = originalItems[0].cloneNode(true);
+            const lastClone = originalItems[originalItems.length - 1].cloneNode(true);
 
-        const getPageStarts = function () {
-            const visibleCount = getVisibleCount();
+            firstClone.setAttribute("data-carousel-clone", "true");
+            firstClone.setAttribute("aria-hidden", "true");
+            lastClone.setAttribute("data-carousel-clone", "true");
+            lastClone.setAttribute("aria-hidden", "true");
 
-            if (items.length <= visibleCount) {
-                return [0];
-            }
-
-            const pageStarts = [];
-
-            for (let index = 0; index < items.length; index += visibleCount) {
-                const pageStart = Math.min(index, items.length - visibleCount);
-
-                if (pageStarts[pageStarts.length - 1] !== pageStart) {
-                    pageStarts.push(pageStart);
-                }
-            }
-
-            return pageStarts;
-        };
+            track.insertBefore(lastClone, track.firstChild);
+            track.appendChild(firstClone);
+            items = Array.from(track.children);
+        }
 
         const getPageCount = function () {
-            return getPageStarts().length;
+            return originalItems.length;
         };
 
-        const findPageByStart = function (itemStart) {
-            const pageStarts = getPageStarts();
-            let matchedPage = 0;
+        const getRealPageIndex = function () {
+            if (!hasMultipleItems) {
+                return 0;
+            }
 
-            pageStarts.forEach(function (pageStart, index) {
-                if (pageStart <= itemStart) {
-                    matchedPage = index;
-                }
-            });
-
-            return matchedPage;
-        };
-
-        const getGap = function () {
-            const styles = window.getComputedStyle(track);
-            return parseFloat(styles.columnGap || styles.gap || 0);
+            return (currentPage - 1 + getPageCount()) % getPageCount();
         };
 
         const shouldAutoplay = function () {
             return window.innerWidth > 900 && !reducedMotionQuery.matches && getPageCount() > 1;
         };
 
-        const updateCarousel = function () {
-            const pageStarts = getPageStarts();
-            currentPage = Math.min(currentPage, pageStarts.length - 1);
+        const updateCarousel = function (shouldAnimate) {
+            const currentItem = items[currentPage];
 
-            const itemWidth = items[0].getBoundingClientRect().width;
-            const offset = pageStarts[currentPage] * (itemWidth + getGap());
+            if (!currentItem) {
+                return;
+            }
+
+            const itemWidth = currentItem.getBoundingClientRect().width;
+            const itemOffset = currentItem.offsetLeft;
+            const offset = Math.max(0, itemOffset - (carousel.clientWidth - itemWidth) / 2);
+
+            isAnimating = shouldAnimate !== false && hasMultipleItems;
+            track.classList.toggle("is-resetting", shouldAnimate === false);
             track.style.transform = "translateX(-" + offset + "px)";
 
-            const disabled = pageStarts.length <= 1;
+            const disabled = getPageCount() <= 1;
             prevBtn.disabled = disabled;
             nextBtn.disabled = disabled;
 
             dotButtons.forEach(function (dot, index) {
-                dot.classList.toggle("active", index === currentPage);
+                dot.classList.toggle("active", index === getRealPageIndex());
             });
         };
 
         const goToPage = function (nextPage) {
             const pageCount = getPageCount();
-            currentPage = pageCount <= 1 ? 0 : (nextPage + pageCount) % pageCount;
-            updateCarousel();
+
+            if (pageCount <= 1) {
+                currentPage = 0;
+                updateCarousel(false);
+                return;
+            }
+
+            if (isAnimating) {
+                return;
+            }
+
+            currentPage = nextPage;
+            updateCarousel(true);
         };
 
         const stopAutoplay = function () {
@@ -147,13 +211,41 @@ function initCasesCarousel() {
                 dot.className = "carousel-dot";
                 dot.setAttribute("aria-label", "切换到第 " + (index + 1) + " 组案例");
                 dot.addEventListener("click", function () {
-                    goToPage(index);
+                    goToPage(hasMultipleItems ? index + 1 : index);
                     startAutoplay();
                 });
                 dotsContainer.appendChild(dot);
                 dotButtons.push(dot);
             }
         };
+
+        track.addEventListener("transitionend", function (event) {
+            if (event.target !== track || event.propertyName !== "transform" || !hasMultipleItems) {
+                return;
+            }
+
+            isAnimating = false;
+
+            if (currentPage === 0) {
+                currentPage = getPageCount();
+                updateCarousel(false);
+                requestAnimationFrame(function () {
+                    track.classList.remove("is-resetting");
+                });
+                return;
+            }
+
+            if (currentPage === getPageCount() + 1) {
+                currentPage = 1;
+                updateCarousel(false);
+                requestAnimationFrame(function () {
+                    track.classList.remove("is-resetting");
+                });
+                return;
+            }
+
+            track.classList.remove("is-resetting");
+        });
 
         prevBtn.addEventListener("click", function () {
             goToPage(currentPage - 1);
@@ -173,17 +265,20 @@ function initCasesCarousel() {
         window.addEventListener(
             "resize",
             debounce(function () {
-                const currentStart = getPageStarts()[currentPage] || 0;
-                renderDots();
-                currentPage = findPageByStart(currentStart);
-                updateCarousel();
+                updateCarousel(false);
+                requestAnimationFrame(function () {
+                    track.classList.remove("is-resetting");
+                });
                 startAutoplay();
             }, 120),
             { passive: true }
         );
 
         renderDots();
-        updateCarousel();
+        updateCarousel(false);
+        requestAnimationFrame(function () {
+            track.classList.remove("is-resetting");
+        });
         startAutoplay();
     });
 }
