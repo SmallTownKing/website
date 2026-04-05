@@ -1,0 +1,680 @@
+/* =========================================
+   案例详情页专属样式 (Case Detail)
+   ========================================= */
+
+/* 顶部 Banner 区 */
+.case-banner {
+    background: linear-gradient(90deg, #F3F6FF 0%, #EEEFFF 100%);
+    height: 500px;
+}
+
+.case-banner-inner {
+    padding-top: 124px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.case-banner-content {
+    width: 560px;
+    padding: 4px 0 0 0;
+}
+
+.case-banner-title {
+    color: #6C57FF;
+    height: 40px;
+    line-height: 40px;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0; /* 重置 h1 默认外边距 */
+}
+
+.case-banner-desc {
+    margin-top: 16px;
+    height: 96px;
+    line-height: 32px;
+    font-size: 16px;
+    color: #232323;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.case-metrics {
+    margin-top: 24px;
+    display: flex;
+    column-gap: 48px;
+}
+
+.case-metric-value {
+    color: #6C57FF;
+    font-size: 24px;
+    height: 32px;
+    line-height: 32px;
+    font-weight: 600;
+}
+
+.case-metric-label {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #696969;
+    line-height: 24px;
+}
+
+.case-banner-image {
+    border-radius: 32px;
+    width: 540px;
+    height: 316px;
+    background-size: 100% 100%;
+}
+
+/* 正文内容区 */
+.case-content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
+
+.case-section-title {
+    height: 40px;
+    line-height: 40px;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    margin-top: 60px; /* 默认第一个没有上边距 */
+}
+
+.case-section-title.spacing-top {
+    margin-top: 48px; /* 用于底部带间距的二级标题 */
+}
+
+.case-paragraph {
+    color: #3E3E3E;
+    font-size: 16px;
+    margin-bottom: 16px;
+    margin-top: 0;
+}
+
+/* 挑战与解决方案区块 */
+.case-challenge-box {
+    padding: 24px;
+    border-radius: 16px;
+    display: flex;
+}
+
+.case-challenge-box.box-purple {
+    background-color: #F6F5FF;
+}
+
+.case-challenge-box.box-cyan {
+    background-color: #F0FBFC;
+    margin-top: 16px;
+}
+
+.challenge-col-left {
+    width: 360px;
+    margin-right: 104px;
+}
+
+.challenge-col-right {
+    width: 360px;
+}
+
+.challenge-icon {
+    width: 24px;
+    margin-right: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.challenge-title {
+    font-size: 16px;
+    line-height: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+
+.challenge-title.text-purple {
+    color: #6C57FF;
+}
+
+.challenge-title.text-cyan {
+    color: #00BFD4;
+}
+
+.challenge-desc {
+    line-height: 24px;
+    font-size: 14px;
+    color: #232323;
+}
+
+/* 详情大图 */
+.case-detail-image {
+    width: 1000px;
+    height: 500px;
+    border-radius: 16px;
+    display: block;
+}
+.page-loading-wrapper {
+    color: #696969;
+    font-size: 14px;
+    background-color: #FFFFFF;
+}
+
+.page-loading-wrapper > p {
+    margin-top: 16px;
+    text-align: center;
+    line-height: 22px;
+}
+
+.detail-skeleton-banner {
+    background: linear-gradient(90deg, #F3F6FF 0%, #EEEFFF 100%);
+    min-height: 500px;
+}
+
+.detail-skeleton-banner__inner {
+    padding-top: 124px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.detail-skeleton-banner__content {
+    width: 560px;
+    padding: 4px 0 0 0;
+}
+
+.detail-skeleton-banner__media {
+    width: 540px;
+    height: 316px;
+    border-radius: 32px;
+}
+
+.detail-skeleton-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+.detail-skeleton-metrics {
+    margin-top: 24px;
+    display: flex;
+    column-gap: 48px;
+}
+
+.detail-skeleton-metric {
+    flex: 0 0 auto;
+}
+
+.detail-skeleton-line,
+.detail-skeleton-chip,
+.detail-skeleton-banner__media,
+.detail-skeleton-image,
+.detail-skeleton-challenge__icon {
+    display: block;
+}
+
+.detail-skeleton-line {
+    border-radius: 999px;
+}
+
+.detail-skeleton-chip {
+    width: 104px;
+    height: 24px;
+    border-radius: 999px;
+}
+
+.detail-skeleton-line--title {
+    width: 72%;
+    height: 40px;
+    margin-top: 20px;
+}
+
+.detail-skeleton-line--text {
+    width: 100%;
+    height: 24px;
+    margin-top: 16px;
+}
+
+.detail-skeleton-line--text-short {
+    width: 82%;
+    height: 24px;
+    margin-top: 12px;
+}
+
+.detail-skeleton-line--metric-value {
+    width: 72px;
+    height: 32px;
+}
+
+.detail-skeleton-line--metric-label {
+    width: 120px;
+    height: 20px;
+    margin-top: 8px;
+}
+
+.detail-skeleton-line--section {
+    width: 260px;
+    height: 40px;
+    margin-top: 0;
+}
+
+.detail-skeleton-line--paragraph {
+    width: 100%;
+    height: 20px;
+    margin-top: 16px;
+}
+
+.detail-skeleton-line--paragraph-short {
+    width: 76%;
+    height: 20px;
+    margin-top: 12px;
+}
+
+.detail-skeleton-challenge {
+    margin-top: 32px;
+    padding: 24px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    background-color: #F6F5FF;
+}
+
+.detail-skeleton-challenge--alt {
+    margin-top: 16px;
+    background-color: #F0FBFC;
+}
+
+.detail-skeleton-challenge__column {
+    width: 360px;
+}
+
+.detail-skeleton-challenge__column:first-child {
+    margin-right: 104px;
+}
+
+.detail-skeleton-challenge__icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 24px;
+}
+
+.detail-skeleton-line--challenge-title {
+    width: 136px;
+    height: 22px;
+}
+
+.detail-skeleton-line--challenge-text {
+    width: 100%;
+    height: 18px;
+    margin-top: 12px;
+}
+
+.detail-skeleton-image {
+    width: 100%;
+    height: 500px;
+    border-radius: 16px;
+    margin-top: 24px;
+}
+
+.detail-skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, #E9EDF8 0%, #F5F7FD 50%, #E9EDF8 100%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.detail-skeleton-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.52) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    animation: skeleton-sweep 1.4s ease-in-out infinite;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #EEEFFF; 
+    border-top-color: #6C57FF; 
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes skeleton-sweep {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-skeleton-shimmer,
+    .detail-skeleton-shimmer::after,
+    .spinner {
+        animation: none;
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1024px) {
+    .case-banner {
+        height: auto;
+        padding-bottom: 56px;
+    }
+
+    .detail-skeleton-banner {
+        min-height: 0;
+        padding-bottom: 56px;
+    }
+
+    .case-banner-inner {
+        max-width: none;
+        padding: 124px 32px 0;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .detail-skeleton-banner__inner {
+        max-width: none;
+        padding: 124px 32px 0;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .case-banner-content,
+    .case-banner-image {
+        width: 100%;
+    }
+
+    .detail-skeleton-banner__content,
+    .detail-skeleton-banner__media {
+        width: 100%;
+    }
+
+    .case-banner-content {
+        padding-top: 0;
+    }
+
+    .detail-skeleton-banner__content {
+        padding-top: 0;
+    }
+
+    .case-banner-title,
+    .case-banner-desc,
+    .case-section-title {
+        height: auto;
+    }
+
+    .case-banner-desc {
+        -webkit-line-clamp: unset;
+    }
+
+    .case-metrics {
+        flex-wrap: wrap;
+        gap: 20px 32px;
+    }
+
+    .detail-skeleton-metrics {
+        flex-wrap: wrap;
+        gap: 20px 32px;
+    }
+
+    .case-banner-image {
+        max-width: 720px;
+        height: auto;
+        aspect-ratio: 540 / 316;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .detail-skeleton-banner__media {
+        max-width: 720px;
+        height: auto;
+        aspect-ratio: 540 / 316;
+    }
+
+    .case-content-wrapper {
+        max-width: none;
+        padding: 0 32px 56px;
+    }
+
+    .detail-skeleton-content {
+        max-width: none;
+        padding: 48px 32px 56px;
+    }
+
+    .case-section-title {
+        font-size: 28px;
+        line-height: 38px;
+        margin-top: 48px;
+    }
+
+    .case-section-title.spacing-top {
+        margin-top: 40px;
+    }
+
+    .case-paragraph {
+        line-height: 30px;
+    }
+
+    .case-challenge-box {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .detail-skeleton-challenge {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .challenge-col-left,
+    .challenge-col-right {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .detail-skeleton-challenge__column,
+    .detail-skeleton-challenge__column:first-child {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .challenge-icon {
+        width: 100%;
+        margin-right: 0;
+        justify-content: center;
+    }
+
+    .detail-skeleton-challenge__icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto;
+    }
+
+    .challenge-icon img {
+        transform: rotate(90deg);
+    }
+
+    .case-detail-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .detail-skeleton-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2 / 1;
+    }
+
+    .page-loading-wrapper {
+        padding-bottom: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .case-banner {
+        padding-bottom: 40px;
+    }
+
+    .detail-skeleton-banner {
+        padding-bottom: 40px;
+    }
+
+    .case-banner-inner {
+        padding: 104px 16px 0;
+        gap: 24px;
+    }
+
+    .detail-skeleton-banner__inner {
+        padding: 104px 16px 0;
+        gap: 24px;
+    }
+
+    .case-banner-title {
+        font-size: 28px;
+        line-height: 38px;
+    }
+
+    .detail-skeleton-line--title {
+        width: 88%;
+        height: 38px;
+        margin-top: 16px;
+    }
+
+    .case-banner-desc {
+        margin-top: 12px;
+        font-size: 15px;
+        line-height: 28px;
+    }
+
+    .detail-skeleton-line--text,
+    .detail-skeleton-line--text-short {
+        height: 22px;
+    }
+
+    .case-metrics {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .detail-skeleton-metrics {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .case-metric-value {
+        font-size: 22px;
+        line-height: 30px;
+        height: auto;
+    }
+
+    .case-metric-label {
+        line-height: 22px;
+    }
+
+    .case-banner-image {
+        border-radius: 24px;
+    }
+
+    .detail-skeleton-banner__media {
+        border-radius: 24px;
+    }
+
+    .case-content-wrapper {
+        padding: 0 16px 48px;
+    }
+
+    .detail-skeleton-content {
+        padding: 40px 16px 48px;
+    }
+
+    .case-section-title {
+        margin-top: 40px;
+        margin-bottom: 12px;
+        font-size: 24px;
+        line-height: 34px;
+    }
+
+    .detail-skeleton-line--section {
+        width: 180px;
+        height: 34px;
+    }
+
+    .case-section-title.spacing-top {
+        margin-top: 32px;
+    }
+
+    .case-paragraph {
+        font-size: 15px;
+        line-height: 28px;
+        margin-bottom: 12px;
+    }
+
+    .case-challenge-box {
+        padding: 20px 16px;
+        border-radius: 14px;
+        gap: 16px;
+    }
+
+    .detail-skeleton-challenge {
+        margin-top: 24px;
+        padding: 20px 16px;
+        border-radius: 14px;
+        gap: 16px;
+    }
+
+    .challenge-title {
+        font-size: 15px;
+        line-height: 26px;
+    }
+
+    .challenge-desc {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .case-detail-image {
+        border-radius: 14px;
+    }
+
+    .detail-skeleton-image {
+        border-radius: 14px;
+        aspect-ratio: 16 / 9;
+    }
+
+    .page-loading-wrapper {
+        padding-bottom: 0;
+    }
+}

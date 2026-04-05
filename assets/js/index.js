@@ -89,7 +89,9 @@ async function initCasesCarousel() {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const hoverQuery = window.matchMedia("(hover: hover)");
     const requestedCases = await fetchCasesData();
-    document.querySelectorAll(".cases-carousel").forEach(function (carousel) {
+    const carousels = document.querySelectorAll(".cases-carousel");
+
+    for (const carousel of carousels) {
         const track = carousel.querySelector(".carousel-track-inner");
         const prevBtn = carousel.querySelector("[data-carousel-prev]");
         const nextBtn = carousel.querySelector("[data-carousel-next]");
@@ -97,16 +99,18 @@ async function initCasesCarousel() {
         const dotsContainer = section ? section.querySelector("[data-carousel-dots]") : null;
 
         if (!track || !prevBtn || !nextBtn) {
-            return;
+            continue; // 原来的 return 改成 continue
         }
+
         const fallbackCases = collectCaseItems(track);
         const caseData = requestedCases.length ? requestedCases : fallbackCases;
 
         if (!caseData.length) {
-            return;
+            continue; // 原来的 return 改成 continue
         }
 
-        renderCaseItems(track, caseData);
+        // ✅ 最核心的修复：等待网络请求和 DOM 渲染彻底完成
+        await renderCaseItems(track, caseData);
 
         const baseItems = Array.from(track.children);
         const hasMultipleItems = baseItems.length > 1;
@@ -291,7 +295,7 @@ async function initCasesCarousel() {
             track.classList.remove("is-resetting");
         });
         startAutoplay();
-    });
+    }
 }
 
 function requestApi(url, options) {
@@ -363,9 +367,9 @@ function normalizeCaseItem(item, index) {
         title: item.projectName || "案例标题",
         description: item.customerBackground || item.desc || item.summary || item.content || "",
         metrics: normalizeCaseMetrics(item),
-        detailUrl: item.detailUrl || item.url || item.href || item.link || "/products/detail/?id=1",
+        detailUrl:  "/products/detail/?id=" + item.recordId,
         detailText: item.detailText || item.buttonText || "查看案例详情",
-        imageUrl: item.imageUrl || item.image || item.cover || item.background || item.banner || "",
+        imageUrl: item.titleBackgroundImage[0].fileToken,
         imageClassName: item.imageClassName || item.imageClass || getDefaultCaseImageClass(index),
     };
 }
@@ -413,12 +417,38 @@ function collectCaseItems(track) {
         .filter(Boolean);
 }
 
-function renderCaseItems(track, cases) {
+async function renderCaseItems(track, cases) {
     track.innerHTML = "";
 
+    const fileIds = cases
+        .map(item => item.imageUrl)
+        .filter(url => url && !url.startsWith("http") && !url.startsWith("url(") && !url.startsWith("data:"));
+
+    let urlMap = {};
+    console.log(fileIds)
+    if (fileIds.length > 0) {
+        try {
+            const res = await requestApi('/api/file/getFileTmpUrl?fileIds=' + fileIds.join(','));
+
+            const urlList = res.data || res;
+
+            fileIds.forEach((id, index) => {
+                urlMap[id] = urlList[index]?.tmpDownloadUrl || urlList[index];
+            });
+        } catch (e) {
+            console.error("批量图片链接获取失败:", e);
+        }
+    }
+
+    // 3. 使用 DocumentFragment 优化渲染性能
+    const fragment = document.createDocumentFragment();
+
     cases.forEach(function (caseItem, index) {
-        track.appendChild(createCaseItemElement(caseItem, index));
+        caseItem.imageUrl = urlMap[caseItem.imageUrl] || caseItem.imageUrl;
+        fragment.appendChild(createCaseItemElement(caseItem, index));
     });
+
+    track.appendChild(fragment);
 }
 
 function createCaseItemElement(caseItem, index) {
@@ -445,7 +475,7 @@ function createCaseItemElement(caseItem, index) {
     title.textContent = caseItem.title;
     description.textContent = caseItem.description;
     detailLink.textContent = caseItem.detailText || "查看案例详情";
-    console.log(caseItem.metrics)
+
     if (caseItem.imageUrl) {
         article.style.backgroundImage = 'url("' + caseItem.imageUrl.replace(/"/g, '\\"') + '")';
     }
@@ -516,12 +546,22 @@ function initFloatingContact() {
     const trigger = widget.querySelector(".floating-contact-trigger");
     const panel = widget.querySelector(".floating-contact-panel");
     const hoverQuery = window.matchMedia("(hover: hover)");
+    const CLOSE_DELAY = 180;
+    let closeTimer = null;
 
     if (!trigger || !panel) {
         return;
     }
 
+    const clearCloseTimer = function () {
+        if (closeTimer) {
+            window.clearTimeout(closeTimer);
+            closeTimer = null;
+        }
+    };
+
     const setOpen = function (isOpen) {
+        clearCloseTimer();
         widget.classList.toggle("is-open", isOpen);
         trigger.setAttribute("aria-expanded", String(isOpen));
         trigger.setAttribute("aria-label", isOpen ? "收起联系我们面板" : "展开联系我们面板");
@@ -529,15 +569,51 @@ function initFloatingContact() {
     };
 
     const closePanel = function () {
+        clearCloseTimer();
         setOpen(false);
     };
 
+    const scheduleClose = function () {
+        clearCloseTimer();
+        closeTimer = window.setTimeout(function () {
+            const activeElement = document.activeElement;
+            const keepOpen =
+                widget.matches(":hover") ||
+                panel.matches(":hover") ||
+                trigger.matches(":hover") ||
+                (activeElement && widget.contains(activeElement));
+
+            if (!keepOpen) {
+                setOpen(false);
+            }
+        }, CLOSE_DELAY);
+    };
+
     if (hoverQuery.matches) {
-        widget.addEventListener("mouseenter", function () {
+        trigger.addEventListener("mouseenter", function () {
             setOpen(true);
         });
 
-        widget.addEventListener("mouseleave", closePanel);
+        trigger.addEventListener("mouseleave", function (event) {
+            if (panel.contains(event.relatedTarget)) {
+                return;
+            }
+
+            scheduleClose();
+        });
+
+        panel.addEventListener("mouseenter", function () {
+            clearCloseTimer();
+            setOpen(true);
+        });
+
+        panel.addEventListener("mouseleave", function (event) {
+            if (trigger.contains(event.relatedTarget)) {
+                return;
+            }
+
+            scheduleClose();
+        });
     }
 
     trigger.addEventListener("click", function () {
@@ -555,7 +631,7 @@ function initFloatingContact() {
 
     widget.addEventListener("focusout", function (event) {
         if (!widget.contains(event.relatedTarget)) {
-            closePanel();
+            scheduleClose();
         }
     });
 

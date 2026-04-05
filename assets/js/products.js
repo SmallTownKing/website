@@ -4,18 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
     void initProductsPage();
 });
 
+// ✅ 优化 1：修改了默认配置，区分开 Tab 接口和列表接口
 const DEFAULT_PRODUCTS_API_CONFIG = {
-    tabsUrl: "/api/projectCase/list/industry",
-    listUrl: "/api/projectCase/list/industry",
+    tabsUrl: "/api/projectCase/list/industry", // 获取分类 Tab 的接口
+    listUrl: "/api/projectCase/list",          // 获取案例列表的接口
     tabsMethod: "GET",
     listMethod: "GET",
     tabIdParam: "categoryId",
     tabSlugParam: "categoryCode",
     tabNameParam: "categoryName",
     pageSizeParam: "pageSize",
-    pageSize: 12,
-    tabsParams: null,
-    listParams: null,
 };
 
 function initHeader() {
@@ -120,7 +118,9 @@ async function initProductsPage() {
     const fallbackProducts = collectFallbackProducts(listContainer);
     let tabs = fallbackTabs.length ? fallbackTabs : [createDefaultAllTab()];
     let activeTab = getInitialActiveTab(tabs);
-    let activeRequestId = 0;
+
+    // ✅ 优化 3：新增全局数据缓存，用于前端本地过滤
+    let allProductsData = []; 
 
     const updateTabs = function (nextTabs, nextActiveTab) {
         renderTabs(tabsContainer, nextTabs, nextActiveTab, function (tab) {
@@ -130,57 +130,61 @@ async function initProductsPage() {
 
             activeTab = tab;
             updateTabs(tabs, activeTab);
-            void loadProductsByTab(activeTab);
+            
+            // ✅ 优化 3：切换 Tab 时，直接调用前端过滤渲染，不再发网络请求
+            void renderFilteredProducts(activeTab);
         });
     };
 
-    const loadProductsByTab = async function (tab) {
-        const requestId = activeRequestId + 1;
-        activeRequestId = requestId;
+    // ✅ 优化 3：专门用于前端本地过滤并渲染的函数
+    const renderFilteredProducts = async function (tab) {
+        setListLoading(listContainer, true);
+        
+        // 使用 matchesTab (会校验 tag 和 groupValues) 过滤出符合当前 tab 的数据
+        const filteredProducts = allProductsData.filter(function(product) {
+            return matchesTab(product, tab);
+        });
+
+        await renderProductList(listContainer, filteredProducts);
+        
+        toggleEmptyState(emptyState, !filteredProducts.length);
+        setStatus(status, filteredProducts.length ? "内容已更新" : "暂无相关内容");
+        setListLoading(listContainer, false);
+    };
+
+    // 初始化加载（只在页面刚打开时执行一次）
+    const initialLoad = async function () {
         setListLoading(listContainer, true);
         setStatus(status, "正在加载内容...");
 
+        // 1. 获取 Tabs 分类
         try {
-            const products = await fetchProductsContent(apiConfig, tab);
-
-            if (requestId !== activeRequestId) {
-                return;
+            const requestedTabs = await fetchProductsTabs(apiConfig);
+            if (requestedTabs.length) {
+                tabs = ensureAllTab(requestedTabs);
+                activeTab = resolveActiveTab(tabs, activeTab);
             }
-
-            renderProductList(listContainer, products);
-            toggleEmptyState(emptyState, !products.length);
-            setStatus(status, products.length ? "内容已更新" : "暂无相关内容");
         } catch (error) {
-            console.warn("Failed to load product content:", error);
-
-            if (requestId !== activeRequestId) {
-                return;
-            }
-
-            const products = filterFallbackProducts(fallbackProducts, tab);
-            renderProductList(listContainer, products);
-            toggleEmptyState(emptyState, !products.length);
-            setStatus(status, products.length ? "接口异常，已展示静态内容" : "暂无相关内容");
-        } finally {
-            if (requestId === activeRequestId) {
-                setListLoading(listContainer, false);
-            }
+            console.warn("Failed to load product tabs:", error);
         }
+
+        // 2. 获取【全部】列表数据
+        try {
+            // 传一个 AllTab 进去，接口请求时就不会带分类参数，从而拿到全部数据
+            allProductsData = await fetchProductsContent(apiConfig, createDefaultAllTab());
+        } catch (error) {
+            console.warn("Failed to load all products content:", error);
+            // 接口挂了就降级使用页面原本的静态 HTML 数据
+            allProductsData = fallbackProducts; 
+        }
+
+        updateTabs(tabs, activeTab);
+        
+        // 3. 拿到数据后，对当前的 activeTab 进行第一次本地过滤渲染
+        await renderFilteredProducts(activeTab);
     };
 
-    try {
-        const requestedTabs = await fetchProductsTabs(apiConfig);
-
-        if (requestedTabs.length) {
-            tabs = ensureAllTab(requestedTabs);
-            activeTab = resolveActiveTab(tabs, activeTab);
-        }
-    } catch (error) {
-        console.warn("Failed to load product tabs:", error);
-    }
-
-    updateTabs(tabs, activeTab);
-    await loadProductsByTab(activeTab);
+    await initialLoad();
 }
 
 function getProductsApiConfig(section) {
@@ -198,7 +202,7 @@ function getProductsApiConfig(section) {
 function fetchProductsTabs(apiConfig) {
     const requestOptions = buildApiRequestOptions(apiConfig.tabsMethod, apiConfig.tabsParams);
 
-    return requestApi(apiConfig.tabsUrl, {}).then(function (response) {
+    return requestApi(apiConfig.tabsUrl, requestOptions).then(function (response) {
         return ensureAllTab(
             extractArray(response)
                 .map(function (item, index) {
@@ -405,12 +409,51 @@ function renderTabs(container, tabs, activeTab, onTabSelect) {
     });
 }
 
-function renderProductList(container, products) {
+async function renderProductList(container, products) {
     container.innerHTML = "";
 
+    const fileIds = products
+        .map(item => item.imageUrl)
+        .filter(url => url && !url.startsWith("http") && !url.startsWith("data:") && !url.startsWith("/") && !url.startsWith("."));
+
+    const uniqueFileIds = Array.from(new Set(fileIds));
+    let urlMap = {};
+
+    if (uniqueFileIds.length > 0) {
+        try {
+            const chunkSize = 100; 
+            for (let i = 0; i < uniqueFileIds.length; i += chunkSize) {
+                const chunkIds = uniqueFileIds.slice(i, i + chunkSize);
+                const res = await requestApi('/api/file/getFileTmpUrl?fileIds=' + chunkIds.join(','));
+                
+                const data = res.data || res.result || res;
+                
+                if (!Array.isArray(data) && typeof data === 'object') {
+                    Object.assign(urlMap, data);
+                } else if (Array.isArray(data)) {
+                    data.forEach((item, idx) => {
+                        if (typeof item === 'string') {
+                            urlMap[chunkIds[idx]] = item;
+                        } else if (item && (item.url || item.fileUrl || item.fileToken || item.tmpDownloadUrl)) {
+                            const originId = item.id || item.fileId || chunkIds[idx];
+                            // 根据你上一个回复的截图/代码，使用 tmpDownloadUrl 或其他备选
+                            urlMap[originId] = item.tmpDownloadUrl || item.url || item.fileUrl || item.fileToken;
+                        }
+                    });
+                }
+            }
+        } catch (e) {
+            console.error("批量获取产品图片链接失败:", e);
+        }
+    }
+
+    const fragment = document.createDocumentFragment();
     products.forEach(function (product) {
-        container.appendChild(createProductCard(product));
+        product.realImageUrl = urlMap[product.imageUrl] || product.imageUrl;
+        fragment.appendChild(createProductCard(product));
     });
+
+    container.appendChild(fragment);
 }
 
 function createProductCard(product) {
@@ -430,16 +473,20 @@ function createProductCard(product) {
     article.dataset.productTag = product.tag || "";
     article.dataset.productTitle = product.title || "";
     article.dataset.productDescription = product.description || "";
-    article.dataset.productImage = product.imageUrl || "";
+    
+    article.dataset.productImage = product.realImageUrl || product.imageUrl || "";
     article.dataset.productUrl = product.detailUrl || "";
 
     link.className = "products-card__link";
     link.href = product.detailUrl || "#";
+    link.target = "_blank";
 
     panel.className = "products-card__panel hover-card";
     image.className = "products-card__image";
-    image.src = product.imageUrl || "/assets/images/1.jpg";
+    
+    image.src = product.realImageUrl || "/assets/images/1.jpg";
     image.alt = (product.title || "案例") + "封面";
+    
     body.className = "products-card__body";
     tag.className = "products-card__tag";
     title.className = "products-card__title";
@@ -496,7 +543,7 @@ function normalizeProductItem(item, index) {
         return null;
     }
 
-    const id = String(pickFirstValue(item.id, item.productId, item.caseId, item.idStr, index + 1)).trim();
+    const id = String(pickFirstValue(item.recordId, item.productId, item.caseId, item.idStr, index + 1)).trim();
     const title = pickFirstValue(item.title, item.name, item.productName, item.caseName, item.projectName);
     const description = pickFirstValue(
         item.description,
@@ -511,12 +558,20 @@ function normalizeProductItem(item, index) {
         return null;
     }
 
+    // ✅ 优化 2：安全地提取图片 Token
+    let token = "";
+    if (item.contentImage && Array.isArray(item.contentImage) && item.contentImage.length > 0) {
+        token = item.titleBackgroundImage[0].fileToken || item.contentImage[0].url || "";
+    } else {
+        token = item.imageUrl || item.cover || item.image || "";
+    }
+
     return {
         id: id,
         title: title,
         tag: pickFirstValue(item.tag, item.category, item.categoryName, item.type, item.industry, "成功案例"),
         description: description || "暂无案例简介",
-        imageUrl: pickFirstValue(item.imageUrl, item.cover, item.image, item.banner, item.thumbnail, "/assets/images/1.jpg"),
+        imageUrl: token, 
         detailUrl:
             pickFirstValue(item.detailUrl, item.url, item.href, item.link) ||
             "/products/detail/?id=" + encodeURIComponent(id),
@@ -536,12 +591,7 @@ function normalizeProductItem(item, index) {
     };
 }
 
-function filterFallbackProducts(products, activeTab) {
-    return products.filter(function (product) {
-        return matchesTab(product, activeTab);
-    });
-}
-
+// 供前端过滤使用的核心校验函数，比较数据里的 tag/groupValues 与当前选中的 tab 属性是否一致
 function matchesTab(product, activeTab) {
     if (!activeTab || activeTab.isAll) {
         return true;
@@ -550,6 +600,8 @@ function matchesTab(product, activeTab) {
     const targets = [activeTab.id, activeTab.slug, activeTab.name]
         .map(normalizeComparable)
         .filter(Boolean);
+        
+    // 此处会将产品的 groupValues 和 tag 一并抓出来与当前 Tab 进行匹配对比
     const sources = []
         .concat(product.groupValues || [])
         .concat(product.tag || [])
