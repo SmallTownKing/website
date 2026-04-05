@@ -34,7 +34,7 @@
                         <li><a href="/about/">关于我们</a></li>
                     </ul>
                 </nav>
-                <button class="btn btn-primary">预约咨询</button>
+                <button class="btn btn-primary" onclick="openSolutionModal()">预约咨询</button>
             </div>
         </div>
     </header>
@@ -231,7 +231,7 @@
 
         <section id="cases" class="cases container overflow-hidden">
             <h2 class="section-title2 text-center">100+成功案例</h2>
-             <div class="cases-view-all-wrap">
+            <div class="cases-view-all-wrap">
                 <a href="/products/" class="btn-view-all">查看全部案例 ></a>
             </div>
             <div class="cases-carousel" data-cases-carousel>
@@ -438,7 +438,7 @@
                     <div class="footer-column-list">
                         <div class="footer-column-item">
                             <img src="/assets/images/phone.svg" />
-                            <div>13023086670</div>
+                            <div>17841021398</div>
                         </div>
                         <div class="footer-column-item">
                             <img src="/assets/images/email.svg" />
@@ -469,7 +469,7 @@
                 </div>
                 <div class="footer-column footer-column-wechat">
                     <div class="footer-column-title">添加专家微信</div>
-                    <img src="/assets/images/code.png" />
+                    <img src="/assets/images/wx.jpg" style="width: 88px; height: 88px;" />
                 </div>
             </div>
             <div class="footer-divider"></div>
@@ -502,19 +502,23 @@
                     </div>
                     <div class="floating-contact-panel-item">
                         <div class="floating-contact-panel-item-icon">
-                             <img src="/assets/images/chat.svg" alt="在线洽谈" />
+                            <img src="/assets/images/chat.svg" alt="在线洽谈" />
                         </div>
                         <div>
-                            <div id="online-contact-btn" class="floating-contact-panel-item-title" style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;">在线接洽</div>
+                            <div id="online-contact-btn" class="floating-contact-panel-item-title"
+                                style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;">在线接洽
+                            </div>
                             <div class="floating-contact-panel-item-desc">点击跳转微信，快速沟通对接</div>
                         </div>
                     </div>
                     <div class="floating-contact-panel-item">
                         <div class="floating-contact-panel-item-icon">
-                             <img src="/assets/images/service.svg" alt="在线洽谈" />
+                            <img src="/assets/images/service.svg" alt="在线洽谈" />
                         </div>
                         <div>
-                            <div class="floating-contact-panel-item-title" style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;">预约咨询</div>
+                            <div class="floating-contact-panel-item-title"
+                                style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;">预约咨询
+                            </div>
                             <div class="floating-contact-panel-item-desc">留下您的联系方式，获取专属咨询服务</div>
                         </div>
                     </div>
@@ -527,6 +531,31 @@
             <div class="floating-contact-text">联系我们</div>
         </div>
     </div>
+    <div class="modal-overlay" id="solutionModal">
+        <div class="modal-container">
+            <img src="/assets/images/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSolutionModal()" />
+            <img src="/assets/images/consult.png" style="width: 100%; height: 120px; border-radius: 16px 16px 0 0;" />
+            <form style="padding: 0 24px;" id="solutionForm">
+                <div style="height: 20px; line-height: 20px;  font-size: 14px;">1.企业全称</div>
+                <input id="userName" type="text" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
+                    autocomplete="off" required />
+                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">2.手机号</div>
+                <input id="userPhone" type="number" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
+                    autocomplete="off" required />
+                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">3.您希望解决什么问题？</div>
+                <textarea id="userMessage" type="text" class="modal-input"
+                    style="margin-top: 8px; resize: none; height: 100px; line-height: 20px; padding: 10px 12px; "
+                    placeholder="请输入" autocomplete="off" required></textarea>
+                <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+                    <button onclick="closeSolutionModal()"
+                        style="width: 88px ; height: 40px; background: #fff; color: #696969; border: 1px solid #E4E4E4;"
+                        class="modal-submit-btn" type="button">取消</button>
+                    <button style="width: 272px ; height: 40px;" class="modal-submit-btn" id="submitBtn">提交</button>
+                </div>
+            </form>
+        </div>
 </body>
 
 </html>

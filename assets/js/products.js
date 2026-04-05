@@ -119,7 +119,6 @@ async function initProductsPage() {
     let tabs = fallbackTabs.length ? fallbackTabs : [createDefaultAllTab()];
     let activeTab = getInitialActiveTab(tabs);
 
-    // ✅ 优化 3：新增全局数据缓存，用于前端本地过滤
     let allProductsData = []; 
 
     const updateTabs = function (nextTabs, nextActiveTab) {
@@ -130,17 +129,12 @@ async function initProductsPage() {
 
             activeTab = tab;
             updateTabs(tabs, activeTab);
-            
-            // ✅ 优化 3：切换 Tab 时，直接调用前端过滤渲染，不再发网络请求
             void renderFilteredProducts(activeTab);
         });
     };
 
-    // ✅ 优化 3：专门用于前端本地过滤并渲染的函数
     const renderFilteredProducts = async function (tab) {
         setListLoading(listContainer, true);
-        
-        // 使用 matchesTab (会校验 tag 和 groupValues) 过滤出符合当前 tab 的数据
         const filteredProducts = allProductsData.filter(function(product) {
             return matchesTab(product, tab);
         });
@@ -152,7 +146,6 @@ async function initProductsPage() {
         setListLoading(listContainer, false);
     };
 
-    // 初始化加载（只在页面刚打开时执行一次）
     const initialLoad = async function () {
         setListLoading(listContainer, true);
         setStatus(status, "正在加载内容...");
@@ -167,19 +160,15 @@ async function initProductsPage() {
             console.warn("Failed to load product tabs:", error);
         }
 
-        // 2. 获取【全部】列表数据
         try {
-            // 传一个 AllTab 进去，接口请求时就不会带分类参数，从而拿到全部数据
             allProductsData = await fetchProductsContent(apiConfig, createDefaultAllTab());
         } catch (error) {
             console.warn("Failed to load all products content:", error);
-            // 接口挂了就降级使用页面原本的静态 HTML 数据
             allProductsData = fallbackProducts; 
         }
 
         updateTabs(tabs, activeTab);
         
-        // 3. 拿到数据后，对当前的 activeTab 进行第一次本地过滤渲染
         await renderFilteredProducts(activeTab);
     };
 

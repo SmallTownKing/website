@@ -11,6 +11,17 @@
     --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
+html,
+body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -32,6 +43,87 @@ a {
 
 ul {
     list-style: none;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: block;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+    opacity: 0;
+}
+
+.modal-overlay.is-active {
+    display: flex;
+    opacity: 1;
+    z-index: 1001;
+}
+
+.modal-container {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    height: 536px;
+}
+
+.modal-overlay.is-active .modal-container {
+    transform: scale(1);
+}
+
+
+.modal-close-btn:hover {
+    background: #f3f4f6;
+    color: #333;
+}
+
+
+.modal-input {
+    width: 100%;
+    border: 1px solid #E4E4E4;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #232323;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.modal-input::placeholder {
+    color: #999999;
+    line-height: 20px;
+}
+
+.modal-input:focus {
+    background-color: #ffffff;
+    border-color: #6C57FF;
+}
+
+.modal-submit-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #23B2FF 0%, #6C57FF 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .container {
@@ -66,23 +158,17 @@ ul {
     border: 1px solid #E4E4E4;
     border-radius: 16px;
     background-color: #ffffff;
-    /* 必须加背景色，否则阴影效果不好看 */
     cursor: pointer;
-    /* 鼠标放上去变小手，提升体验 */
-
-    /* 【核心】添加过渡动画，0.3秒的平滑曲线 */
     transition: all 0.3s ease-in-out;
 }
 
-/* 2. 鼠标悬浮时的状态 */
+
+
+
+
 .hover-card:hover {
-    /* 往上移 8 像素 */
     transform: translateY(-8px);
-
-    /* 添加柔和的阴影：水平偏移0 垂直偏移12px 模糊半径24px 颜色及透明度 */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-
-    /* 可选：悬浮时把边框变透明或换成主题色，让阴影更突出 */
     border-color: transparent;
 }
 
@@ -117,9 +203,6 @@ ul {
     padding: 0;
 }
 
-/* ==========================================================================
-           导航栏 Header
-           ========================================================================== */
 .header {
     position: fixed;
     top: 0;
@@ -348,9 +431,6 @@ ul {
     font-size: 14px;
 }
 
-/* ==========================================================================
-           通用标题
-           ========================================================================== */
 .section-title {
     font-size: 2rem;
     margin: 160px 0 80px;
@@ -369,9 +449,6 @@ ul {
     position: relative;
 }
 
-/* ==========================================================================
-           瓶颈问题 (Issues)
-           ========================================================================== */
 .issues-content {
     display: flex;
     flex-direction: column;
@@ -443,9 +520,6 @@ ul {
     margin-right: -48px;
 }
 
-/* ==========================================================================
-           解决方案 (Services)
-           ========================================================================== */
 .services {
     padding-bottom: 80px;
     max-width: 1200px;
@@ -541,7 +615,6 @@ ul {
     height: 120px;
 }
 
-/* 主标题 */
 .card-title {
     margin: 32px 0;
     height: 40px;
@@ -551,7 +624,6 @@ ul {
     font-weight: 600;
 }
 
-/* 紫色小标题 / 标签 */
 .info-label {
     margin-bottom: 8px;
     height: 24px;
@@ -561,7 +633,6 @@ ul {
     font-weight: 500;
 }
 
-/* 描述正文 */
 .info-desc {
     margin-bottom: 24px;
     height: 20px;
@@ -570,12 +641,10 @@ ul {
     font-size: 14px;
 }
 
-/* 最后一个描述正文（距底部按钮更远） */
 .desc-last {
     margin-bottom: 32px;
 }
 
-/* 预约按钮定制样式 (基于原有的 btn btn-primary) */
 .consult-btn {
     display: flex;
     align-items: center;
@@ -934,9 +1003,6 @@ ul {
     color: #6C57FF;
 }
 
-/* ==========================================================================
-           2. 为什么选择我们 (Why Us) - 提取出的语义化类
-           ========================================================================== */
 .why-us-container {
     margin-top: 100px;
 }
@@ -991,9 +1057,6 @@ ul {
     line-height: 32px;
 }
 
-/* ==========================================================================
-           3. 合作伙伴 (Partners) - 提取出的语义化类
-           ========================================================================== */
 .partners-section {
     height: 604px;
     margin: 0 auto;
@@ -1264,8 +1327,7 @@ ul {
 
 }
 
-.floating-contact-panel-main {
-}
+.floating-contact-panel-main {}
 
 .floating-contact-panel-item {
     display: flex;
@@ -1488,7 +1550,6 @@ body.mobile-menu-open {
     }
 
     .form-input {
-        /* flex: 1 1 260px; */
         width: auto;
     }
 

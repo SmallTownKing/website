@@ -11,6 +11,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     }
+    const modal = document.getElementById('solutionModal');
+    const form = document.getElementById('solutionForm');
+    const submitBtn = document.getElementById('submitBtn');
+    window.openSolutionModal = function () {
+        modal.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    window.closeSolutionModal = function () {
+        modal.classList.remove('is-active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            form.reset();
+        }, 300);
+    }
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const nameValue = document.getElementById('userName').value.trim();
+        const phoneValue = document.getElementById('userPhone').value.trim();
+        const messageValue = document.getElementById('userMessage').value.trim();
+        const phoneReg = /^1[3-9]\d{9}$/;
+        if (!phoneReg.test(phoneValue)) {
+            alert("请输入正确的11位手机号码！");
+            return;
+        }
+        const submitData = {
+            companyFullName: nameValue,
+            phoneNumber: phoneValue,
+            problemDescription: messageValue
+        };
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = '提交中...';
+        submitBtn.disabled = true;
+
+        requestApi("/api/mql/add", {
+            method: "POST",
+            body: submitData
+        })
+            .then(function (response) {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                closeSolutionModal();
+            })
+            .catch(function (error) {
+                console.error("提交失败:", error);
+                alert("提交失败，请稍后再试。");
+            })
+            .finally(function () { })
+    });
+
 });
 
 const CASES_API_URL = window.CASES_API_URL || "/api/projectCase/list";
