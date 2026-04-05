@@ -4,21 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>专注企业级软件开发 - 为各行业提供一站式数字化解决方案 | 轻搭云</title>
-    <meta name="description"
-        content="轻搭云专注企业级软件开发，提供一站式数字化解决方案。涵盖PaaS深度定制、SaaS二开、全代码开发、APP小程序开发、API集成及数字营销，助力企业全方位数字化转型。点击了解成功案例和定制服务。">
-    <meta name="keywords" content="企业级软件开发, 数字化解决方案, PaaS定制, SaaS二开, 全代码定制, APP开发, 小程序开发, API集成, 数字营销">
+    <title>关于我们 | 轻搭云企业数字化服务团队</title>
+    <meta name="description" content="了解轻搭云的团队背景、服务理念、价值观与发展历程。我们深耕企业数字化建设，为跨境贸易、高端制造、金融科技等行业提供稳定可靠的交付服务。">
+    <meta name="keywords" content="轻搭云, 关于我们, 企业数字化服务商, 软件开发团队, 数字化转型服务, 交付服务商">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#6C57FF">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="关于我们 | 轻搭云企业数字化服务团队">
+    <meta property="og:description" content="查看轻搭云的团队介绍、服务理念、价值观与发展历程，了解我们如何持续陪伴企业完成数字化建设。">
+    <meta property="og:image" content="/assets/images/about.png">
+    <link rel="preload" href="/assets/images/about.png" as="image">
     <link rel="stylesheet" href="../assets/css/index.css">
-    <script src="../assets/js/product.js" defer></script>
+    <link rel="stylesheet" href="../assets/css/about.css">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "关于轻搭云",
+            "description": "轻搭云团队介绍页面，包含企业简介、价值观与发展历程。",
+            "inLanguage": "zh-CN",
+            "mainEntity": {
+                "@type": "Organization",
+                "name": "轻搭云",
+                "url": "/about/",
+                "logo": "/assets/images/logo.svg"
+            }
+        }
+    </script>
+    <script src="../assets/js/about.js" defer></script>
 </head>
 
-<body>
+<body class="about-page">
     <header class="header" id="header">
         <div class="container header-inner">
             <div class="logo">
-                <div aria-label="轻搭云科技Logo">
+                <a href="/" aria-label="轻搭云科技首页">
                     <img src="/assets/images/logo.svg" alt="轻搭云科技" class="header-logo-img" />
-                </div>
+                </a>
             </div>
             <button class="header-menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"
                 aria-label="打开导航菜单">
@@ -30,119 +52,97 @@
                 <nav class="nav" aria-label="主导航">
                     <ul>
                         <li><a href="/">首页</a></li>
-                        <li><a href="/products">成功案例</a></li>
-                        <li><a href="/about" class="active">关于我们</a></li>
+                        <li><a href="/products/">成功案例</a></li>
+                        <li><a href="/about/" class="active">关于我们</a></li>
                     </ul>
                 </nav>
-                <button class="btn btn-primary">预约咨询</button>
+                <button class="btn btn-primary" type="button">预约咨询</button>
             </div>
         </div>
     </header>
-    <main>
-        <div
-            style="height: 400px; background-image: url('/assets/images/about.png'); background-size: 100vw 400px; background-repeat: no-repeat;">
-            <div style="padding-top: 136px; max-width: 1200px; margin: 0 auto;">
-                <div class="hero-eyebrow">全场景客户实践见证</div>
-                <div style="margin-top: 48px; display: flex; column-gap: 64px;">
-                    <div style="width: 96px; color: #6C57FF;">
-                        <div style="height: 32px; line-height: 32px; font-size: 32px; font-weight: 600;">5年</div>
-                        <div style="margin-top: 8px; height: 24px; line-height: 24px; font-size: 16px;">深耕行业年限</div>
-                    </div>
-                    <div style="width: 96px; color: #6C57FF;">
-                        <div style="height: 32px; line-height: 32px; font-size: 32px; font-weight: 600;">100+</div>
-                        <div style="margin-top: 8px; height: 24px; line-height: 24px; font-size: 16px;">服务客户数量</div>
-                    </div>
-                    <div style="width: 96px; color: #6C57FF;">
-                        <div style="height: 32px; line-height: 32px; font-size: 32px; font-weight: 600;">10+</div>
-                        <div style="margin-top: 8px; height: 24px; line-height: 24px; font-size: 16px;">覆盖行业类型</div>
-                    </div>
-                </div>
+
+    <main class="about-main">
+        <section class="about-hero" aria-labelledby="about-page-title">
+            <div class="about-hero__inner">
+                <h1 class="about-sr-only" id="about-page-title">关于轻搭云企业数字化服务团队</h1>
+                <p class="hero-eyebrow about-hero__eyebrow">全场景客户实践见证</p>
+                <ul class="about-hero__stats" aria-label="团队关键数据">
+                    <li class="about-hero__stat">
+                        <div class="about-hero__stat-value">5年</div>
+                        <div class="about-hero__stat-label">深耕行业年限</div>
+                    </li>
+                    <li class="about-hero__stat">
+                        <div class="about-hero__stat-value">100+</div>
+                        <div class="about-hero__stat-label">服务客户数量</div>
+                    </li>
+                    <li class="about-hero__stat">
+                        <div class="about-hero__stat-value">10+</div>
+                        <div class="about-hero__stat-label">覆盖行业类型</div>
+                    </li>
+                </ul>
             </div>
+        </section>
+
+        <div class="about-shell">
+            <section class="about-section about-section--company" aria-labelledby="about-company-title">
+                <div class="about-section-heading about-section-heading--about">
+                    <h2 class="about-section-heading__title" id="about-company-title">关于我们</h2>
+                    <div class="about-section-heading__ghost about-section-heading__ghost--about" aria-hidden="true">ABOUT US</div>
+                </div>
+
+                <div class="about-company">
+                    <div class="about-company__content">
+                        <img src="/assets/images/title.png" class="about-company__tag" alt="" aria-hidden="true" />
+                        <p class="about-company__copy">
+                            深圳市轻搭云科技有限公司成立于 2022 年，前身是一家深耕定制化开发的软件工作室，2024 年正式公司化运营，总部位于深圳，业务范围覆盖全国 10+ 重点城市，专注于企业数字化建设。作为官方认证交付服务商，我们拥有 100% 持证的顾问与工程师团队，恪守标准化的交付流程与快速响应的售后服务体系，已为跨境贸易、高端制造、金融科技、公益组织等 10 余个行业的客户成功交付 100+ 数字化项目，客户复购率高达 90%。我们深信，数字化不是一次性的项目交付，而是与企业共同成长的持续旅程。我们愿以“根植于信，交付于实”的初心，陪伴企业走好数字化转型每一步。
+                        </p>
+                    </div>
+                    <img src="/assets/images/logo.png" class="about-company__image" alt="轻搭云团队介绍视觉图" />
+                </div>
+            </section>
+
+            <section class="about-section about-section--values" aria-labelledby="about-values-title">
+                <div class="about-section-heading about-section-heading--values">
+                    <h2 class="about-section-heading__title" id="about-values-title">我们的价值观</h2>
+                    <div class="about-section-heading__ghost about-section-heading__ghost--values" aria-hidden="true">Our values</div>
+                </div>
+
+                <div class="about-values__grid">
+                    <article class="about-value-card">
+                        <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
+                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
+                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                    </article>
+                    <article class="about-value-card">
+                        <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
+                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
+                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                    </article>
+                    <article class="about-value-card">
+                        <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
+                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
+                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                    </article>
+                    <article class="about-value-card">
+                        <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
+                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
+                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="about-section about-section--development" aria-labelledby="about-development-title">
+                <div class="about-section-heading about-section-heading--development">
+                    <h2 class="about-section-heading__title" id="about-development-title">我们的发展</h2>
+                    <div class="about-section-heading__ghost about-section-heading__ghost--development" aria-hidden="true">Our development</div>
+                </div>
+
+                <img src="/assets/images/development.png" class="about-development__image" alt="轻搭云发展历程" />
+            </section>
         </div>
-        <div style="margin: 0 auto; max-width: 1200px;">
-            <div
-                style="margin-top: 80px; text-align: center; height: 56px; line-height: 56px; font-size: 40px; color: #232323; font-weight: 600; position: relative;">
-                <div>关于我们</div>
-                <div style="position: absolute;top: 32px;width: 427px;
-height: 80px; left: calc(50% - 213.5px); font-size: 80px; color: #F8F8F8; z-index: -1; font-weight: 700;">ABOUT US
-                </div>
-            </div>
-            <div style="margin-top: 96px; display: flex; justify-content: space-between;">
-                <div>
-                    <img src="/assets/images/title.png" style="width: 118px; height: 16px;" />
-                    <div style="margin-top: 24px; width: 560px; font-size: 16px; line-height: 32px;">
-                        深圳市轻搭云科技有限公司成立于2022年，前身是一家深耕定制化开发的软件工作室，2024年正式公司化运营，总部位于深圳，业务范围覆盖全国30+重点城市，专注于企业数字化建设。作为官方认证交付服务商，我们拥有100%持证的顾问与工程师团队，恪守标准化的交付流程与快速响应的售后服务体系，已为跨境贸易、高端制造、金融科技、公益组织等10余个行业的客户成功交付100+数字化项目，客户复购率高达80%，我们深信，数字化不是一次性的项目交付，而是与企业共同成长的持续旅程。我们愿以“根植于信，交付于实”的初心，陪伴企业走好数字化转型每一步。
-                    </div>
-                </div>
-                <img src="/assets/images/logo.png"
-                    style="width: 560px; height: 314px; border-radius: 24px; display: block;" />
-            </div>
-            <div
-                style="margin-top: 120px; text-align: center; height: 56px; line-height: 56px; font-size: 40px; color: #232323; font-weight: 600; position: relative;">
-                <div>我们的价值观</div>
-                <div style="position: absolute;top: 32px;width: 525px;
-height: 80px; left: calc(50% - 262.5px); font-size: 80px; color: #F8F8F8; z-index: -1; font-weight: 700;">Our values
-                </div>
-            </div>
-            <div style="margin-top: 136px; display: flex; column-gap: 24px;">
-                <div
-                    style="width: 282px; height: 164px;background: linear-gradient( 180deg, #EFF4FE 0%, #F1FDFF 100%);border-radius: 24px 24px 24px 24px; position: relative;">
-                    <img src="/assets/images/image.png"
-                        style="position: absolute;  width: 84px; height: 72px; top: -36px; left: calc(50% - 42px);" />
-                    <div
-                        style="padding-top: 48px; height: 80px; line-height: 32px; font-weight: 600; color: #232323; font-size: 20px; text-align: center;">
-                        根植于信，交付于实</div>
-                    <div
-                        style="margin-top: 4px; height: 24px; line-height: 24px;  color: #696969; font-size: 14px; text-align: center;">
-                        以诚信为本，交付稳定可靠的产品</div>
-                </div>
-                <div
-                    style="width: 282px; height: 164px;background: linear-gradient( 180deg, #EFF4FE 0%, #F1FDFF 100%);border-radius: 24px 24px 24px 24px; position: relative;">
-                    <img src="/assets/images/image.png"
-                        style="position: absolute;  width: 84px; height: 72px; top: -36px; left: calc(50% - 42px);" />
-                    <div
-                        style="padding-top: 48px; height: 80px; line-height: 32px; font-weight: 600; color: #232323; font-size: 20px; text-align: center;">
-                        根植于信，交付于实</div>
-                    <div
-                        style="margin-top: 4px; height: 24px; line-height: 24px;  color: #696969; font-size: 14px; text-align: center;">
-                        以诚信为本，交付稳定可靠的产品</div>
-                </div>
-                <div
-                    style="width: 282px; height: 164px;background: linear-gradient( 180deg, #EFF4FE 0%, #F1FDFF 100%);border-radius: 24px 24px 24px 24px; position: relative;">
-                    <img src="/assets/images/image.png"
-                        style="position: absolute;  width: 84px; height: 72px; top: -36px; left: calc(50% - 42px);" />
-                    <div
-                        style="padding-top: 48px; height: 80px; line-height: 32px; font-weight: 600; color: #232323; font-size: 20px; text-align: center;">
-                        根植于信，交付于实</div>
-                    <div
-                        style="margin-top: 4px; height: 24px; line-height: 24px;  color: #696969; font-size: 14px; text-align: center;">
-                        以诚信为本，交付稳定可靠的产品</div>
-                </div>
-                <div
-                    style="width: 282px; height: 164px;background: linear-gradient( 180deg, #EFF4FE 0%, #F1FDFF 100%);border-radius: 24px 24px 24px 24px; position: relative;">
-                    <img src="/assets/images/image.png"
-                        style="position: absolute;  width: 84px; height: 72px; top: -36px; left: calc(50% - 42px);" />
-                    <div
-                        style="padding-top: 48px; height: 80px; line-height: 32px; font-weight: 600; color: #232323; font-size: 20px; text-align: center;">
-                        根植于信，交付于实</div>
-                    <div
-                        style="margin-top: 4px; height: 24px; line-height: 24px;  color: #696969; font-size: 14px; text-align: center;">
-                        以诚信为本，交付稳定可靠的产品</div>
-                </div>
-            </div>
-            <div
-                style="margin-top: 120px; text-align: center; height: 56px; line-height: 56px; font-size: 40px; color: #232323; font-weight: 600; position: relative;">
-                <div>我们的发展</div>
-                <div style="position: absolute;top: 32px;width: 827px;
-height: 80px; left: calc(50% - 413.5px); font-size: 80px; color: #F8F8F8; z-index: -1; font-weight: 700;">Our
-                    development
-                </div>
-            </div>
-            <img src="/assets/images/development.png" style="width: 1200px; height: 616px; margin-top: 96px; margin-bottom: 80px;"
-                alt="我们的发展" />
-        </div>
+
         <section id="lead-gen" class="lead-gen container lead-gen-section">
-            <div style="margin: 0 auto; max-width: 1200px;">
+            <div class="about-lead-gen__inner">
                 <h2 class="lead-gen-title">预约您的数字化转型专家诊断</h2>
                 <p class="lead-gen-desc">输入您的联系方式，让我们为您提供精准的行业洞察与落地建议</p>
 
@@ -154,13 +154,14 @@ height: 80px; left: calc(50% - 413.5px); font-size: 80px; color: #F8F8F8; z-inde
             </div>
         </section>
     </main>
+
     <footer class="footer">
         <div class="footer-main">
             <div class="footer-top">
                 <div class="footer-brand">
                     <img src="/assets/images/logo.svg" alt="轻搭云科技" class="footer-logo" />
                     <div class="footer-brand-desc">
-                        深圳市轻搭云科技有限公司，专注于企业数字化建设。 官方认证交付服务商，致力于为企业打造随业务持续进化的数字基座。
+                        深圳市轻搭云科技有限公司，专注于企业数字化建设。官方认证交付服务商，致力于为企业打造随业务持续进化的数字化底座。
                     </div>
                 </div>
                 <div class="footer-column footer-column-contact">
@@ -184,15 +185,15 @@ height: 80px; left: calc(50% - 413.5px); font-size: 80px; color: #F8F8F8; z-inde
                     <div class="footer-column-title">官方认证资质</div>
                     <div class="footer-column-list">
                         <div class="footer-column-item">
-                            <span class="products-footer-dot" aria-hidden="true"></span>
+                            <span class="about-footer-dot" aria-hidden="true"></span>
                             <div>PaaS交付认证</div>
                         </div>
                         <div class="footer-column-item">
-                            <span class="products-footer-dot" aria-hidden="true"></span>
+                            <span class="about-footer-dot" aria-hidden="true"></span>
                             <div>全代码开发规范</div>
                         </div>
                         <div class="footer-column-item">
-                            <span class="products-footer-dot" aria-hidden="true"></span>
+                            <span class="about-footer-dot" aria-hidden="true"></span>
                             <div>行业标杆服务商</div>
                         </div>
                     </div>

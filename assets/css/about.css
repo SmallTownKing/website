@@ -1,0 +1,381 @@
+.about-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.about-hero {
+    height: 400px;
+    background-image: url('../images/about.png');
+    background-repeat: no-repeat;
+    background-size: 100vw 400px;
+    background-position: center top;
+}
+
+.about-hero__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 136px;
+}
+
+.about-hero__stats {
+    margin-top: 48px;
+    display: flex;
+    column-gap: 64px;
+}
+
+.about-hero__stat {
+    width: 96px;
+    color: #6C57FF;
+}
+
+.about-hero__stat-value {
+    height: 32px;
+    line-height: 32px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.about-hero__stat-label {
+    margin-top: 8px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+}
+
+.about-shell {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.about-section-heading {
+    text-align: center;
+    height: 56px;
+    line-height: 56px;
+    font-size: 40px;
+    color: #232323;
+    font-weight: 600;
+    position: relative;
+}
+
+.about-section-heading--about {
+    margin-top: 80px;
+}
+
+.about-section-heading--values,
+.about-section-heading--development {
+    margin-top: 120px;
+}
+
+.about-section-heading__title {
+    position: relative;
+    z-index: 1;
+}
+
+.about-section-heading__ghost {
+    position: absolute;
+    top: 32px;
+    height: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 80px;
+    line-height: 80px;
+    color: #F8F8F8;
+    z-index: 0;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.about-section-heading__ghost--about {
+    width: 427px;
+}
+
+.about-section-heading__ghost--values {
+    width: 525px;
+}
+
+.about-section-heading__ghost--development {
+    width: 827px;
+}
+
+.about-company {
+    margin-top: 96px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.about-company__content {
+    width: 560px;
+}
+
+.about-company__tag {
+    width: 118px;
+    height: 16px;
+    display: block;
+}
+
+.about-company__copy {
+    margin-top: 24px;
+    width: 560px;
+    font-size: 16px;
+    line-height: 32px;
+    color: #232323;
+}
+
+.about-company__image {
+    width: 560px;
+    height: 314px;
+    border-radius: 24px;
+    display: block;
+}
+
+.about-values__grid {
+    margin-top: 136px;
+    display: flex;
+    column-gap: 24px;
+}
+
+.about-value-card {
+    width: 282px;
+    height: 164px;
+    background: linear-gradient(180deg, #EFF4FE 0%, #F1FDFF 100%);
+    border-radius: 24px;
+    position: relative;
+}
+
+.about-value-card__icon {
+    position: absolute;
+    width: 84px;
+    height: 72px;
+    top: -36px;
+    left: calc(50% - 42px);
+}
+
+.about-value-card__title {
+    padding-top: 48px;
+    height: 80px;
+    line-height: 32px;
+    font-weight: 600;
+    color: #232323;
+    font-size: 20px;
+    text-align: center;
+}
+
+.about-value-card__desc {
+    margin-top: 4px;
+    height: 24px;
+    line-height: 24px;
+    color: #696969;
+    font-size: 14px;
+    text-align: center;
+}
+
+.about-development__image {
+    width: 1200px;
+    height: 616px;
+    margin-top: 96px;
+    margin-bottom: 80px;
+    display: block;
+}
+
+.about-lead-gen__inner {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.about-footer-dot {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: #696969;
+    flex: 0 0 2px;
+}
+
+@media (max-width: 1024px) {
+    .about-hero {
+        height: auto;
+        background-size: cover;
+        padding-bottom: 56px;
+    }
+
+    .about-hero__inner {
+        padding: 136px 32px 0;
+    }
+
+    .about-hero__stats {
+        column-gap: 32px;
+        flex-wrap: wrap;
+        row-gap: 20px;
+    }
+
+    .about-shell {
+        padding: 0 32px;
+    }
+
+    .about-section-heading,
+    .about-section-heading__title {
+        height: auto;
+        line-height: 48px;
+    }
+
+    .about-section-heading__ghost {
+        top: 20px;
+        width: auto;
+        font-size: 64px;
+        line-height: 64px;
+    }
+
+    .about-company {
+        margin-top: 72px;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .about-company__content,
+    .about-company__copy,
+    .about-company__image {
+        width: 100%;
+    }
+
+    .about-company__image {
+        max-width: 560px;
+        height: auto;
+    }
+
+    .about-values__grid {
+        margin-top: 112px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 72px 24px;
+    }
+
+    .about-value-card {
+        width: 100%;
+    }
+
+    .about-development__image {
+        width: 100%;
+        height: auto;
+        margin-top: 72px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-hero {
+        padding-bottom: 40px;
+    }
+
+    .about-hero__inner {
+        padding: 112px 16px 0;
+    }
+
+    .about-hero__stats {
+        margin-top: 32px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px 12px;
+    }
+
+    .about-hero__stat {
+        width: auto;
+        text-align: center;
+    }
+
+    .about-hero__stat-value,
+    .about-hero__stat-label {
+        height: auto;
+    }
+
+    .about-hero__stat-value {
+        font-size: 26px;
+        line-height: 34px;
+    }
+
+    .about-hero__stat-label {
+        margin-top: 4px;
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    .about-shell {
+        padding: 0 16px;
+    }
+
+    .about-section-heading--about {
+        margin-top: 56px;
+    }
+
+    .about-section-heading--values,
+    .about-section-heading--development {
+        margin-top: 72px;
+    }
+
+    .about-section-heading {
+        font-size: 28px;
+    }
+
+    .about-section-heading__title {
+        line-height: 38px;
+    }
+
+    .about-section-heading__ghost {
+        top: 18px;
+        font-size: 44px;
+        line-height: 44px;
+    }
+
+    .about-company {
+        margin-top: 48px;
+        gap: 24px;
+    }
+
+    .about-company__copy {
+        margin-top: 20px;
+        font-size: 15px;
+        line-height: 28px;
+    }
+
+    .about-company__image {
+        border-radius: 20px;
+    }
+
+    .about-values__grid {
+        margin-top: 88px;
+        grid-template-columns: 1fr;
+        gap: 56px;
+    }
+
+    .about-value-card {
+        height: auto;
+        min-height: 164px;
+        padding-bottom: 20px;
+    }
+
+    .about-value-card__title,
+    .about-value-card__desc {
+        height: auto;
+    }
+
+    .about-value-card__title {
+        padding: 48px 16px 0;
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    .about-value-card__desc {
+        margin-top: 8px;
+        padding: 0 16px;
+        line-height: 22px;
+    }
+
+    .about-development__image {
+        margin-top: 48px;
+        margin-bottom: 56px;
+    }
+}

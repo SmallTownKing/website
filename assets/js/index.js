@@ -3,9 +3,19 @@ document.addEventListener("DOMContentLoaded", function () {
     void initCasesCarousel();
     initLeadForm();
     initFloatingContact();
+    const contactBtn = document.getElementById('online-contact-btn');
+    if (contactBtn) {
+        contactBtn.addEventListener('click', function () {
+
+            window.open('https://work.weixin.qq.com/kfid/kfc6682a6f30bc8a16f', '_blank');
+
+        });
+    }
 });
 
 const CASES_API_URL = window.CASES_API_URL || "/api/projectCase/list";
+const CASES_SKELETON_COUNT = 3;
+const CASES_SWIPE_THRESHOLD = 48;
 
 function initHeader() {
     const header = document.getElementById("header");
@@ -88,37 +98,52 @@ function initHeader() {
 async function initCasesCarousel() {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const hoverQuery = window.matchMedia("(hover: hover)");
-    const requestedCases = await fetchCasesData();
+    const requestedCasesPromise = fetchCasesData();
     const carousels = document.querySelectorAll(".cases-carousel");
 
     for (const carousel of carousels) {
-        const track = carousel.querySelector(".carousel-track-inner");
-        const prevBtn = carousel.querySelector("[data-carousel-prev]");
-        const nextBtn = carousel.querySelector("[data-carousel-next]");
         const section = carousel.closest("section");
-        const dotsContainer = section ? section.querySelector("[data-carousel-dots]") : null;
+        const track = carousel.querySelector(".carousel-track-inner");
+        const prevBtn = section ? section.querySelector("[data-carousel-prev]") : null;
+        const nextBtn = section ? section.querySelector("[data-carousel-next]") : null;
 
         if (!track || !prevBtn || !nextBtn) {
-            continue; // 原来的 return 改成 continue
+            continue;
         }
 
-        const fallbackCases = collectCaseItems(track);
-        const caseData = requestedCases.length ? requestedCases : fallbackCases;
+        renderCaseSkeletonItems(track, CASES_SKELETON_COUNT);
+        track.setAttribute("aria-busy", "true");
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+
+        const skeletonItems = Array.from(track.children);
+        const skeletonActiveIndex = skeletonItems.length > 1 ? 1 : 0;
+        centerCaseTrack(carousel, track, skeletonItems, skeletonActiveIndex, false);
+        requestAnimationFrame(function () {
+            track.classList.remove("is-resetting");
+        });
+
+        const caseData = await requestedCasesPromise;
 
         if (!caseData.length) {
-            continue; // 原来的 return 改成 continue
+            track.setAttribute("aria-busy", "false");
+            continue;
         }
 
-        // ✅ 最核心的修复：等待网络请求和 DOM 渲染彻底完成
         await renderCaseItems(track, caseData);
+        track.setAttribute("aria-busy", "false");
 
         const baseItems = Array.from(track.children);
         const hasMultipleItems = baseItems.length > 1;
         let items = baseItems.slice();
         let autoplayTimer = null;
-        let dotButtons = [];
         let currentPage = hasMultipleItems ? 1 : 0;
         let isAnimating = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchDeltaX = 0;
+        let touchDeltaY = 0;
+        let isTouchTracking = false;
 
         if (hasMultipleItems) {
             const firstClone = baseItems[0].cloneNode(true);
@@ -138,40 +163,17 @@ async function initCasesCarousel() {
             return hasMultipleItems ? items.length - 2 : items.length;
         };
 
-        const getRealPageIndex = function () {
-            if (!hasMultipleItems) {
-                return 0;
-            }
-
-            return (currentPage - 1 + getPageCount()) % getPageCount();
-        };
-
         const shouldAutoplay = function () {
             return window.innerWidth > 900 && !reducedMotionQuery.matches && getPageCount() > 1;
         };
 
         const updateCarousel = function (shouldAnimate) {
-            const currentItem = items[currentPage];
-
-            if (!currentItem) {
-                return;
-            }
-
-            const itemWidth = currentItem.getBoundingClientRect().width;
-            const itemOffset = currentItem.offsetLeft;
-            const offset = Math.max(0, itemOffset - (carousel.clientWidth - itemWidth) / 2);
-
             isAnimating = shouldAnimate !== false && hasMultipleItems;
-            track.classList.toggle("is-resetting", shouldAnimate === false);
-            track.style.transform = "translateX(-" + offset + "px)";
+            centerCaseTrack(carousel, track, items, currentPage, shouldAnimate);
 
             const disabled = getPageCount() <= 1;
             prevBtn.disabled = disabled;
             nextBtn.disabled = disabled;
-
-            dotButtons.forEach(function (dot, index) {
-                dot.classList.toggle("active", index === getRealPageIndex());
-            });
         };
 
         const goToPage = function (nextPage) {
@@ -210,28 +212,12 @@ async function initCasesCarousel() {
             }, 5000);
         };
 
-        const renderDots = function () {
-            if (!dotsContainer) {
-                return;
-            }
-
-            const count = getPageCount();
-            dotsContainer.innerHTML = "";
-            dotsContainer.style.display = count <= 1 ? "none" : "flex";
-            dotButtons = [];
-
-            for (let index = 0; index < count; index += 1) {
-                const dot = document.createElement("button");
-                dot.type = "button";
-                dot.className = "carousel-dot";
-                dot.setAttribute("aria-label", "切换到第 " + (index + 1) + " 组案例");
-                dot.addEventListener("click", function () {
-                    goToPage(hasMultipleItems ? index + 1 : index);
-                    startAutoplay();
-                });
-                dotsContainer.appendChild(dot);
-                dotButtons.push(dot);
-            }
+        const resetTouchTracking = function () {
+            touchStartX = 0;
+            touchStartY = 0;
+            touchDeltaX = 0;
+            touchDeltaY = 0;
+            isTouchTracking = false;
         };
 
         track.addEventListener("transitionend", function (event) {
@@ -277,6 +263,64 @@ async function initCasesCarousel() {
             carousel.addEventListener("mouseleave", startAutoplay);
         }
 
+        carousel.addEventListener(
+            "touchstart",
+            function (event) {
+                if (getPageCount() <= 1 || !event.touches.length) {
+                    return;
+                }
+
+                const touch = event.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                touchDeltaX = 0;
+                touchDeltaY = 0;
+                isTouchTracking = true;
+                stopAutoplay();
+            },
+            { passive: true }
+        );
+
+        carousel.addEventListener(
+            "touchmove",
+            function (event) {
+                if (!isTouchTracking || !event.touches.length) {
+                    return;
+                }
+
+                const touch = event.touches[0];
+                touchDeltaX = touch.clientX - touchStartX;
+                touchDeltaY = touch.clientY - touchStartY;
+            },
+            { passive: true }
+        );
+
+        carousel.addEventListener(
+            "touchend",
+            function () {
+                if (!isTouchTracking) {
+                    return;
+                }
+
+                if (Math.abs(touchDeltaX) > CASES_SWIPE_THRESHOLD && Math.abs(touchDeltaX) > Math.abs(touchDeltaY)) {
+                    goToPage(currentPage + (touchDeltaX < 0 ? 1 : -1));
+                }
+
+                resetTouchTracking();
+                startAutoplay();
+            },
+            { passive: true }
+        );
+
+        carousel.addEventListener(
+            "touchcancel",
+            function () {
+                resetTouchTracking();
+                startAutoplay();
+            },
+            { passive: true }
+        );
+
         window.addEventListener(
             "resize",
             debounce(function () {
@@ -289,7 +333,6 @@ async function initCasesCarousel() {
             { passive: true }
         );
 
-        renderDots();
         updateCarousel(false);
         requestAnimationFrame(function () {
             track.classList.remove("is-resetting");
@@ -353,23 +396,47 @@ function fetchCasesData() {
 }
 
 function extractCaseList(response) {
-    const candidates = response.data || [];
-    return candidates
+    const candidates = [
+        response,
+        response && response.data,
+        response && response.result,
+        response && response.list,
+        response && response.rows,
+        response && response.records,
+        response && response.data && response.data.list,
+        response && response.data && response.data.rows,
+        response && response.data && response.data.records,
+        response && response.result && response.result.list,
+        response && response.result && response.result.rows,
+        response && response.result && response.result.records,
+    ];
+
+    for (let index = 0; index < candidates.length; index += 1) {
+        if (Array.isArray(candidates[index])) {
+            return candidates[index];
+        }
+    }
+
+    return [];
 }
 
 function normalizeCaseItem(item, index) {
-
     if (!item || typeof item !== "object") {
         return null;
     }
+
+    const titleBackgroundImage = Array.isArray(item.titleBackgroundImage) ? item.titleBackgroundImage : [];
+    const firstBackgroundImage = titleBackgroundImage[0] || {};
+    const recordId = item.recordId || item.id || index + 1;
+
     return {
-        category: item.industry || "成功案例",
-        title: item.projectName || "案例标题",
+        category: item.industry || item.category || "成功案例",
+        title: item.projectName || item.title || "案例标题",
         description: item.customerBackground || item.desc || item.summary || item.content || "",
         metrics: normalizeCaseMetrics(item),
-        detailUrl:  "/products/detail/?id=" + item.recordId,
+        detailUrl: item.detailUrl || item.url || item.href || item.link || "/products/detail/?id=" + encodeURIComponent(recordId),
         detailText: item.detailText || item.buttonText || "查看案例详情",
-        imageUrl: item.titleBackgroundImage[0].fileToken,
+        imageUrl: item.imageUrl || item.image || item.cover || item.background || item.banner || firstBackgroundImage.fileToken || "",
         imageClassName: item.imageClassName || item.imageClass || getDefaultCaseImageClass(index),
     };
 }
@@ -382,70 +449,52 @@ function isValidCaseMetric(metric) {
     return Boolean(metric && String(metric.value || "").trim() && String(metric.label || "").trim());
 }
 
-function collectCaseItems(track) {
-    return Array.from(track ? track.children : [])
-        .map(function (item, index) {
-            const article = item.querySelector(".case-article-card");
-            const detailLink = item.querySelector(".btn-case-detail");
-
-            if (!article) {
-                return null;
-            }
-
-            const imageClassName = Array.from(article.classList).find(function (className) {
-                return className.indexOf("case-image-") === 0;
-            });
-
-            return {
-                category: getText(item.querySelector(".case-category-tag")),
-                title: getText(item.querySelector(".case-title")),
-                description: getText(item.querySelector(".case-description")),
-                metrics: Array.from(item.querySelectorAll(".case-metrics-list li"))
-                    .map(function (metricItem) {
-                        return {
-                            value: getText(metricItem.querySelector(".metric-value")),
-                            label: getText(metricItem.querySelector(".metric-label")),
-                        };
-                    })
-                    .filter(isValidCaseMetric),
-                detailUrl: detailLink ? detailLink.getAttribute("href") || "#" : "#",
-                detailText: getText(detailLink) || "查看案例详情",
-                imageUrl: readBackgroundImage(article),
-                imageClassName: imageClassName || getDefaultCaseImageClass(index),
-            };
-        })
-        .filter(Boolean);
-}
-
 async function renderCaseItems(track, cases) {
     track.innerHTML = "";
 
-    const fileIds = cases
-        .map(item => item.imageUrl)
-        .filter(url => url && !url.startsWith("http") && !url.startsWith("url(") && !url.startsWith("data:"));
+    const fileIds = Array.from(
+        new Set(
+            cases
+                .map(function (item) {
+                    return item.imageUrl;
+                })
+                .filter(function (url) {
+                    return url && !url.startsWith("http") && !url.startsWith("url(") && !url.startsWith("data:") && !url.startsWith("/");
+                })
+        )
+    );
 
     let urlMap = {};
-    console.log(fileIds)
+
     if (fileIds.length > 0) {
         try {
-            const res = await requestApi('/api/file/getFileTmpUrl?fileIds=' + fileIds.join(','));
+            const res = await requestApi("/api/file/getFileTmpUrl?fileIds=" + fileIds.join(","));
+            const urlList = res.data || res.result || res;
 
-            const urlList = res.data || res;
-
-            fileIds.forEach((id, index) => {
-                urlMap[id] = urlList[index]?.tmpDownloadUrl || urlList[index];
-            });
+            if (Array.isArray(urlList)) {
+                fileIds.forEach(function (id, itemIndex) {
+                    const currentItem = urlList[itemIndex];
+                    urlMap[id] =
+                        (currentItem && (currentItem.tmpDownloadUrl || currentItem.url || currentItem.fileUrl)) ||
+                        currentItem ||
+                        "";
+                });
+            } else if (urlList && typeof urlList === "object") {
+                urlMap = Object.assign({}, urlList);
+            }
         } catch (e) {
             console.error("批量图片链接获取失败:", e);
         }
     }
 
-    // 3. 使用 DocumentFragment 优化渲染性能
     const fragment = document.createDocumentFragment();
 
     cases.forEach(function (caseItem, index) {
-        caseItem.imageUrl = urlMap[caseItem.imageUrl] || caseItem.imageUrl;
-        fragment.appendChild(createCaseItemElement(caseItem, index));
+        const normalizedCase = Object.assign({}, caseItem, {
+            imageUrl: urlMap[caseItem.imageUrl] || caseItem.imageUrl,
+        });
+
+        fragment.appendChild(createCaseItemElement(normalizedCase, index));
     });
 
     track.appendChild(fragment);
@@ -509,6 +558,87 @@ function createCaseItemElement(caseItem, index) {
 function getDefaultCaseImageClass(index) {
     const classes = ["case-image-2", "case-image-3", "case-image-4"];
     return classes[index % classes.length];
+}
+
+function renderCaseSkeletonItems(track, count) {
+    const fragment = document.createDocumentFragment();
+
+    track.innerHTML = "";
+
+    for (let index = 0; index < count; index += 1) {
+        fragment.appendChild(createCaseSkeletonElement());
+    }
+
+    track.appendChild(fragment);
+}
+
+function createCaseSkeletonElement() {
+    const wrapper = document.createElement("div");
+    const article = document.createElement("article");
+    const content = document.createElement("div");
+    const chip = document.createElement("span");
+    const title = document.createElement("span");
+    const textLineOne = document.createElement("span");
+    const textLineTwo = document.createElement("span");
+    const textLineThree = document.createElement("span");
+    const metrics = document.createElement("div");
+    const button = document.createElement("div");
+
+    wrapper.className = "case-items-wrapper case-items-wrapper--skeleton";
+    wrapper.setAttribute("data-carousel-skeleton", "true");
+
+    article.className = "case-article-card case-article-card--skeleton";
+    article.setAttribute("aria-hidden", "true");
+
+    content.className = "case-skeleton-content";
+    chip.className = "case-skeleton-chip case-skeleton-shimmer";
+    title.className = "case-skeleton-line case-skeleton-line--title case-skeleton-shimmer";
+    textLineOne.className = "case-skeleton-line case-skeleton-line--text case-skeleton-shimmer";
+    textLineTwo.className = "case-skeleton-line case-skeleton-line--text case-skeleton-shimmer";
+    textLineThree.className = "case-skeleton-line case-skeleton-line--text-short case-skeleton-shimmer";
+    metrics.className = "case-skeleton-metrics";
+    button.className = "case-skeleton-button case-skeleton-shimmer";
+
+    for (let index = 0; index < 3; index += 1) {
+        const metric = document.createElement("div");
+        const metricValue = document.createElement("span");
+        const metricLabel = document.createElement("span");
+
+        metric.className = "case-skeleton-metric";
+        metricValue.className = "case-skeleton-line case-skeleton-line--metric-value case-skeleton-shimmer";
+        metricLabel.className = "case-skeleton-line case-skeleton-line--metric-label case-skeleton-shimmer";
+
+        metric.appendChild(metricValue);
+        metric.appendChild(metricLabel);
+        metrics.appendChild(metric);
+    }
+
+    content.appendChild(chip);
+    content.appendChild(title);
+    content.appendChild(textLineOne);
+    content.appendChild(textLineTwo);
+    content.appendChild(textLineThree);
+    content.appendChild(metrics);
+    content.appendChild(button);
+    article.appendChild(content);
+    wrapper.appendChild(article);
+
+    return wrapper;
+}
+
+function centerCaseTrack(carousel, track, items, currentPage, shouldAnimate) {
+    const currentItem = items[currentPage];
+
+    if (!currentItem) {
+        return;
+    }
+
+    const itemWidth = currentItem.getBoundingClientRect().width;
+    const itemOffset = currentItem.offsetLeft;
+    const offset = Math.max(0, itemOffset - (carousel.clientWidth - itemWidth) / 2);
+
+    track.classList.toggle("is-resetting", shouldAnimate === false);
+    track.style.transform = "translateX(-" + offset + "px)";
 }
 
 function getText(element) {
@@ -663,3 +793,5 @@ function debounce(callback, wait) {
         }, wait);
     };
 }
+
+

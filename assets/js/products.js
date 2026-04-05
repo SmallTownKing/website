@@ -157,7 +157,6 @@ async function initProductsPage() {
         setListLoading(listContainer, true);
         setStatus(status, "正在加载内容...");
 
-        // 1. 获取 Tabs 分类
         try {
             const requestedTabs = await fetchProductsTabs(apiConfig);
             if (requestedTabs.length) {
