@@ -30,16 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         const nameValue = document.getElementById('userName').value.trim();
         const phoneValue = document.getElementById('userPhone').value.trim();
-        const messageValue = document.getElementById('userMessage').value.trim();
         const phoneReg = /^1[3-9]\d{9}$/;
         if (!phoneReg.test(phoneValue)) {
             alert("请输入正确的11位手机号码！");
             return;
         }
         const submitData = {
-            companyFullName: nameValue,
-            phoneNumber: phoneValue,
-            problemDescription: messageValue
+            clientName: nameValue,
+            phoneNumber: phoneValue
         };
         const originalText = submitBtn.textContent;
         submitBtn.textContent = '提交中...';
@@ -148,8 +146,13 @@ function initHeader() {
 async function initCasesCarousel() {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const hoverQuery = window.matchMedia("(hover: hover)");
-    const requestedCasesPromise = fetchCasesData();
     const carousels = document.querySelectorAll(".cases-carousel");
+
+    if (!carousels.length) {
+        return;
+    }
+
+    const requestedCasesPromise = prepareCasesForRender();
 
     for (const carousel of carousels) {
         const section = carousel.closest("section");
@@ -180,37 +183,48 @@ async function initCasesCarousel() {
             continue;
         }
 
-        await renderCaseItems(track, caseData);
+        renderCaseItems(track, caseData);
         track.setAttribute("aria-busy", "false");
 
         const baseItems = Array.from(track.children);
-        const hasMultipleItems = baseItems.length > 1;
+        const pageCount = baseItems.length;
+        const hasMultipleItems = pageCount > 1;
         let items = baseItems.slice();
         let autoplayTimer = null;
-        let currentPage = hasMultipleItems ? 1 : 0;
+        let currentPage = hasMultipleItems ? pageCount : 0;
         let isAnimating = false;
         let touchStartX = 0;
         let touchStartY = 0;
         let touchDeltaX = 0;
         let touchDeltaY = 0;
         let isTouchTracking = false;
+        const loopStartIndex = hasMultipleItems ? pageCount : 0;
+        const loopEndIndex = hasMultipleItems ? pageCount * 2 - 1 : 0;
 
         if (hasMultipleItems) {
-            const firstClone = baseItems[0].cloneNode(true);
-            const lastClone = baseItems[baseItems.length - 1].cloneNode(true);
+            const leadingClones = document.createDocumentFragment();
+            const trailingClones = document.createDocumentFragment();
 
-            firstClone.setAttribute("data-carousel-clone", "true");
-            firstClone.setAttribute("aria-hidden", "true");
-            lastClone.setAttribute("data-carousel-clone", "true");
-            lastClone.setAttribute("aria-hidden", "true");
+            baseItems.forEach(function (item) {
+                const leadingClone = item.cloneNode(true);
+                const trailingClone = item.cloneNode(true);
 
-            track.insertBefore(lastClone, track.firstChild);
-            track.appendChild(firstClone);
+                leadingClone.setAttribute("data-carousel-clone", "true");
+                leadingClone.setAttribute("aria-hidden", "true");
+                trailingClone.setAttribute("data-carousel-clone", "true");
+                trailingClone.setAttribute("aria-hidden", "true");
+
+                leadingClones.appendChild(leadingClone);
+                trailingClones.appendChild(trailingClone);
+            });
+
+            track.insertBefore(leadingClones, track.firstChild);
+            track.appendChild(trailingClones);
             items = Array.from(track.children);
         }
 
         const getPageCount = function () {
-            return hasMultipleItems ? items.length - 2 : items.length;
+            return pageCount;
         };
 
         const shouldAutoplay = function () {
@@ -226,12 +240,26 @@ async function initCasesCarousel() {
             nextBtn.disabled = disabled;
         };
 
-        const goToPage = function (nextPage) {
-            const pageCount = getPageCount();
+        const finishInstantReset = function () {
+            requestAnimationFrame(function () {
+                track.style.transition = "";
+                track.classList.remove("is-resetting");
+            });
+        };
 
-            if (pageCount <= 1) {
+        const jumpToPage = function (nextPage) {
+            currentPage = nextPage;
+            updateCarousel(false);
+            finishInstantReset();
+        };
+
+        const goToPage = function (nextPage) {
+            const visiblePageCount = getPageCount();
+
+            if (visiblePageCount <= 1) {
                 currentPage = 0;
                 updateCarousel(false);
+                finishInstantReset();
                 return;
             }
 
@@ -277,24 +305,17 @@ async function initCasesCarousel() {
 
             isAnimating = false;
 
-            if (currentPage === 0) {
-                currentPage = getPageCount();
-                updateCarousel(false);
-                requestAnimationFrame(function () {
-                    track.classList.remove("is-resetting");
-                });
+            if (currentPage < loopStartIndex) {
+                jumpToPage(currentPage + pageCount);
                 return;
             }
 
-            if (currentPage === getPageCount() + 1) {
-                currentPage = 1;
-                updateCarousel(false);
-                requestAnimationFrame(function () {
-                    track.classList.remove("is-resetting");
-                });
+            if (currentPage > loopEndIndex) {
+                jumpToPage(currentPage - pageCount);
                 return;
             }
 
+            track.style.transition = "";
             track.classList.remove("is-resetting");
         });
 
@@ -375,18 +396,14 @@ async function initCasesCarousel() {
             "resize",
             debounce(function () {
                 updateCarousel(false);
-                requestAnimationFrame(function () {
-                    track.classList.remove("is-resetting");
-                });
+                finishInstantReset();
                 startAutoplay();
             }, 120),
             { passive: true }
         );
 
         updateCarousel(false);
-        requestAnimationFrame(function () {
-            track.classList.remove("is-resetting");
-        });
+        finishInstantReset();
         startAutoplay();
     }
 }
@@ -445,6 +462,20 @@ function fetchCasesData() {
         });
 }
 
+function prepareCasesForRender() {
+    return fetchCasesData().then(function (cases) {
+        if (!cases.length) {
+            return [];
+        }
+
+        return hydrateCaseImages(cases).then(function (hydratedCases) {
+            return preloadCaseImages(hydratedCases).then(function () {
+                return hydratedCases;
+            });
+        });
+    });
+}
+
 function extractCaseList(response) {
     const candidates = [
         response,
@@ -499,55 +530,14 @@ function isValidCaseMetric(metric) {
     return Boolean(metric && String(metric.value || "").trim() && String(metric.label || "").trim());
 }
 
-async function renderCaseItems(track, cases) {
-    track.innerHTML = "";
-
-    const fileIds = Array.from(
-        new Set(
-            cases
-                .map(function (item) {
-                    return item.imageUrl;
-                })
-                .filter(function (url) {
-                    return url && !url.startsWith("http") && !url.startsWith("url(") && !url.startsWith("data:") && !url.startsWith("/");
-                })
-        )
-    );
-
-    let urlMap = {};
-
-    if (fileIds.length > 0) {
-        try {
-            const res = await requestApi("/api/file/getFileTmpUrl?fileIds=" + fileIds.join(","));
-            const urlList = res.data || res.result || res;
-
-            if (Array.isArray(urlList)) {
-                fileIds.forEach(function (id, itemIndex) {
-                    const currentItem = urlList[itemIndex];
-                    urlMap[id] =
-                        (currentItem && (currentItem.tmpDownloadUrl || currentItem.url || currentItem.fileUrl)) ||
-                        currentItem ||
-                        "";
-                });
-            } else if (urlList && typeof urlList === "object") {
-                urlMap = Object.assign({}, urlList);
-            }
-        } catch (e) {
-            console.error("批量图片链接获取失败:", e);
-        }
-    }
-
+function renderCaseItems(track, cases) {
     const fragment = document.createDocumentFragment();
 
     cases.forEach(function (caseItem, index) {
-        const normalizedCase = Object.assign({}, caseItem, {
-            imageUrl: urlMap[caseItem.imageUrl] || caseItem.imageUrl,
-        });
-
-        fragment.appendChild(createCaseItemElement(normalizedCase, index));
+        fragment.appendChild(createCaseItemElement(caseItem, index));
     });
 
-    track.appendChild(fragment);
+    track.replaceChildren(fragment);
 }
 
 function createCaseItemElement(caseItem, index) {
@@ -622,55 +612,146 @@ function renderCaseSkeletonItems(track, count) {
     track.appendChild(fragment);
 }
 
+function hydrateCaseImages(cases) {
+    const fileIds = Array.from(
+        new Set(
+            cases
+                .map(function (item) {
+                    return item.imageUrl;
+                })
+                .filter(function (url) {
+                    return needsCaseImageResolution(url);
+                })
+        )
+    );
+
+    if (!fileIds.length) {
+        return Promise.resolve(cases.slice());
+    }
+
+    return requestApi("/api/file/getFileTmpUrl?fileIds=" + fileIds.join(","))
+        .then(function (response) {
+            const urlMap = normalizeCaseImageUrlMap(response);
+
+            return cases.map(function (caseItem) {
+                return Object.assign({}, caseItem, {
+                    imageUrl: urlMap[caseItem.imageUrl] || caseItem.imageUrl,
+                });
+            });
+        })
+        .catch(function (error) {
+            console.error("批量图片链接获取失败:", error);
+            return cases.slice();
+        });
+}
+
+function normalizeCaseImageUrlMap(response) {
+    const payload = response && (response.data || response.result || response);
+    const map = {};
+
+    if (Array.isArray(payload)) {
+        payload.forEach(function (item) {
+            if (typeof item === "string") {
+                return;
+            }
+
+            if (!item || typeof item !== "object") {
+                return;
+            }
+
+            const fileId = item.fileToken || item.fileId || item.id;
+            const url = item.tmpDownloadUrl || item.url || item.fileUrl || item.tmpUrl;
+
+            if (fileId && url) {
+                map[fileId] = url;
+            }
+        });
+
+        return map;
+    }
+
+    if (payload && typeof payload === "object") {
+        Object.keys(payload).forEach(function (key) {
+            const value = payload[key];
+            const url =
+                typeof value === "string"
+                    ? value
+                    : value && (value.tmpDownloadUrl || value.url || value.fileUrl || value.tmpUrl);
+
+            if (url) {
+                map[key] = url;
+            }
+        });
+    }
+
+    return map;
+}
+
+function preloadCaseImages(cases) {
+    const imageUrls = Array.from(
+        new Set(
+            (cases || [])
+                .map(function (item) {
+                    return item.imageUrl;
+                })
+                .filter(Boolean)
+        )
+    );
+
+    if (!imageUrls.length) {
+        return Promise.resolve();
+    }
+
+    return Promise.allSettled(
+        imageUrls.map(function (url) {
+            return preloadSingleImage(url, 2200);
+        })
+    ).then(function () {
+        return undefined;
+    });
+}
+
+function preloadSingleImage(url, timeoutMs) {
+    return new Promise(function (resolve) {
+        const image = new Image();
+        let resolved = false;
+        const timer = window.setTimeout(done, timeoutMs || 2000);
+
+        function done() {
+            if (resolved) {
+                return;
+            }
+
+            resolved = true;
+            window.clearTimeout(timer);
+            resolve();
+        }
+
+        image.onload = done;
+        image.onerror = done;
+        image.src = url;
+    });
+}
+
+function needsCaseImageResolution(url) {
+    const source = String(url || "").trim();
+
+    if (!source) {
+        return false;
+    }
+
+    return !/^(https?:)?\/\//.test(source) && !/^(data:|blob:|\/|\.)/.test(source);
+}
+
 function createCaseSkeletonElement() {
     const wrapper = document.createElement("div");
     const article = document.createElement("article");
-    const content = document.createElement("div");
-    const chip = document.createElement("span");
-    const title = document.createElement("span");
-    const textLineOne = document.createElement("span");
-    const textLineTwo = document.createElement("span");
-    const textLineThree = document.createElement("span");
-    const metrics = document.createElement("div");
-    const button = document.createElement("div");
 
     wrapper.className = "case-items-wrapper case-items-wrapper--skeleton";
     wrapper.setAttribute("data-carousel-skeleton", "true");
 
     article.className = "case-article-card case-article-card--skeleton";
     article.setAttribute("aria-hidden", "true");
-
-    content.className = "case-skeleton-content";
-    chip.className = "case-skeleton-chip case-skeleton-shimmer";
-    title.className = "case-skeleton-line case-skeleton-line--title case-skeleton-shimmer";
-    textLineOne.className = "case-skeleton-line case-skeleton-line--text case-skeleton-shimmer";
-    textLineTwo.className = "case-skeleton-line case-skeleton-line--text case-skeleton-shimmer";
-    textLineThree.className = "case-skeleton-line case-skeleton-line--text-short case-skeleton-shimmer";
-    metrics.className = "case-skeleton-metrics";
-    button.className = "case-skeleton-button case-skeleton-shimmer";
-
-    for (let index = 0; index < 3; index += 1) {
-        const metric = document.createElement("div");
-        const metricValue = document.createElement("span");
-        const metricLabel = document.createElement("span");
-
-        metric.className = "case-skeleton-metric";
-        metricValue.className = "case-skeleton-line case-skeleton-line--metric-value case-skeleton-shimmer";
-        metricLabel.className = "case-skeleton-line case-skeleton-line--metric-label case-skeleton-shimmer";
-
-        metric.appendChild(metricValue);
-        metric.appendChild(metricLabel);
-        metrics.appendChild(metric);
-    }
-
-    content.appendChild(chip);
-    content.appendChild(title);
-    content.appendChild(textLineOne);
-    content.appendChild(textLineTwo);
-    content.appendChild(textLineThree);
-    content.appendChild(metrics);
-    content.appendChild(button);
-    article.appendChild(content);
     wrapper.appendChild(article);
 
     return wrapper;
@@ -678,6 +759,7 @@ function createCaseSkeletonElement() {
 
 function centerCaseTrack(carousel, track, items, currentPage, shouldAnimate) {
     const currentItem = items[currentPage];
+    const isInstant = shouldAnimate === false;
 
     if (!currentItem) {
         return;
@@ -687,8 +769,19 @@ function centerCaseTrack(carousel, track, items, currentPage, shouldAnimate) {
     const itemOffset = currentItem.offsetLeft;
     const offset = Math.max(0, itemOffset - (carousel.clientWidth - itemWidth) / 2);
 
-    track.classList.toggle("is-resetting", shouldAnimate === false);
+    if (isInstant) {
+        track.classList.add("is-resetting");
+        track.style.transition = "none";
+    } else {
+        track.style.transition = "";
+        track.classList.remove("is-resetting");
+    }
+
     track.style.transform = "translateX(-" + offset + "px)";
+
+    if (isInstant) {
+        track.getBoundingClientRect();
+    }
 }
 
 function getText(element) {
@@ -710,8 +803,48 @@ function readBackgroundImage(element) {
 
 function initLeadForm() {
     document.querySelectorAll(".lead-gen-form").forEach(function (form) {
+        const submitButton = form.querySelector(".btn-submit");
+        const textInput = form.querySelector('input[type="text"]');
+        const phoneInput = form.querySelector('input[type="tel"]');
+
         form.addEventListener("submit", function (event) {
             event.preventDefault();
+
+            const nameValue = textInput ? textInput.value.trim() : "";
+            const phoneValue = phoneInput ? phoneInput.value.trim() : "";
+            const phoneReg = /^1[3-9]\d{9}$/;
+
+            if (!phoneReg.test(phoneValue)) {
+                alert("请输入正确的11位手机号。");
+                return;
+            }
+
+            if (submitButton) {
+                submitButton.textContent = "提交中...";
+                submitButton.disabled = true;
+            }
+
+            requestApi("/api/mql/add", {
+                method: "POST",
+                body: {
+                    clientName: nameValue,
+                    phoneNumber: phoneValue,
+                },
+            })
+                .then(function () {
+                    form.reset();
+                    alert("提交成功，我们会尽快与您联系。");
+                })
+                .catch(function (error) {
+                    console.error("Lead form submit failed:", error);
+                    alert("提交失败，请稍后再试。");
+                })
+                .finally(function () {
+                    if (submitButton) {
+                        submitButton.textContent = "立即预约";
+                        submitButton.disabled = false;
+                    }
+                });
         });
     });
 }
@@ -843,5 +976,3 @@ function debounce(callback, wait) {
         }, wait);
     };
 }
-
-

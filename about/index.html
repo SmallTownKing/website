@@ -31,6 +31,7 @@
             }
         }
     </script>
+    <script src="../assets/js/page-visit.js" defer></script>
     <script src="../assets/js/about.js" defer></script>
 </head>
 
@@ -56,7 +57,7 @@
                         <li><a href="/about/" class="active">关于我们</a></li>
                     </ul>
                 </nav>
-                <button class="btn btn-primary" type="button">预约咨询</button>
+                <button class="btn btn-primary" type="button" onclick="openSolutionModal()">预约咨询</button>
             </div>
         </div>
     </header>
@@ -216,6 +217,32 @@
             </div>
         </div>
     </footer>
+    <div class="modal-overlay" id="solutionModal">
+        <div class="modal-container">
+            <img src="/assets/images/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSolutionModal()" />
+            <img src="/assets/images/consult.png" style="width: 100%; height: 120px; border-radius: 16px 16px 0 0;" />
+            <form style="padding: 0 24px;" id="solutionForm">
+                <div style="height: 20px; line-height: 20px;  font-size: 14px;">1.企业全称</div>
+                <input id="userName" type="text" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
+                    autocomplete="off" required />
+                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">2.手机号</div>
+                <input id="userPhone" type="number" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
+                    autocomplete="off" required />
+                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">3.您希望解决什么问题？</div>
+                <textarea id="userMessage" type="text" class="modal-input"
+                    style="margin-top: 8px; resize: none; height: 100px; line-height: 20px; padding: 10px 12px; "
+                    placeholder="请输入" autocomplete="off"></textarea>
+                <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+                    <button onclick="closeSolutionModal()"
+                        style="width: 88px ; height: 40px; background: #fff; color: #696969; border: 1px solid #E4E4E4;"
+                        class="modal-submit-btn" type="button">取消</button>
+                    <button style="width: 272px ; height: 40px;" class="modal-submit-btn" id="submitBtn">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
