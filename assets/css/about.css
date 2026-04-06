@@ -75,6 +75,7 @@
 
 .about-section-heading__title {
     position: relative;
+    font-size: 40px;
     z-index: 1;
 }
 
@@ -322,6 +323,7 @@
 
     .about-section-heading__title {
         line-height: 38px;
+        font-size: 28px;
     }
 
     .about-section-heading__ghost {

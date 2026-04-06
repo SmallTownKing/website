@@ -95,7 +95,6 @@
     function detectDeviceType() {
         var ua = (navigator.userAgent || "").toLowerCase();
 
-
         if (/iphone|ipad|ipod|ios/.test(ua)) {
             return "IOS";
         }

@@ -153,6 +153,7 @@ function initSolutionModal() {
     const submitBtn = document.getElementById("submitBtn");
     const nameInput = document.getElementById("userName");
     const phoneInput = document.getElementById("userPhone");
+    const messageInput = document.getElementById("userMessage");
 
     window.openSolutionModal = function () {
         if (!modal) {
@@ -178,7 +179,7 @@ function initSolutionModal() {
         }
     };
 
-    if (!form || !submitBtn || !nameInput || !phoneInput) {
+    if (!form || !submitBtn || !nameInput || !phoneInput || !messageInput) {
         return;
     }
 
@@ -187,6 +188,7 @@ function initSolutionModal() {
 
         const nameValue = nameInput.value.trim();
         const phoneValue = phoneInput.value.trim();
+        const messageValue = messageInput.value.trim();
         const phoneReg = /^1[3-9]\d{9}$/;
         const originalText = submitBtn.textContent;
 
@@ -206,8 +208,9 @@ function initSolutionModal() {
         requestApi("/api/mql/add", {
             method: "POST",
             body: {
-                clientName: nameValue,
+                companyFullName: nameValue,
                 phoneNumber: phoneValue,
+                problemDescription: messageValue,
             },
         })
             .then(function () {
@@ -392,6 +395,17 @@ function requestApi(url, options) {
             requestOptions.headers || {}
         );
         requestOptions.body = JSON.stringify(params);
+    } else if (requestOptions.body && !(requestOptions.body instanceof FormData)) {
+        requestOptions.headers = Object.assign(
+            {
+                "Content-Type": "application/json",
+            },
+            requestOptions.headers || {}
+        );
+
+        if (typeof requestOptions.body !== "string") {
+            requestOptions.body = JSON.stringify(requestOptions.body);
+        }
     }
 
     return fetch(requestUrl, requestOptions).then(function (response) {
