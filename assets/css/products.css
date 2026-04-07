@@ -30,13 +30,24 @@
 }
 
 .products-showcase__inner {
-    padding: 60px 0 80px;
+    padding: 20px 0 80px;
 }
 
 .products-filter-wrap {
     min-width: 0;
 }
+ .require {
+        position: relative;
+    }
 
+    .require::after {
+        content: "*";
+        color: #FF4D4F;
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 .products-filter {
     min-height: 48px;
     display: flex;

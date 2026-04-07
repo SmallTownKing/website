@@ -121,6 +121,7 @@
     color: #3E3E3E;
     font-size: 16px;
     margin-bottom: 16px;
+    line-height: 32px;
     margin-top: 0;
 }
 
@@ -181,10 +182,9 @@
 /* 详情大图 */
 .case-detail-image {
     width: 1000px;
-    height: 500px;
+    height: 585px;
     border-radius: 16px;
     display: block;
-    object-fit: cover;
 }
 
 .page-loading-wrapper {
@@ -514,7 +514,7 @@
     }
 
     .case-paragraph {
-        line-height: 30px;
+        line-height: 32px;
     }
 
     .case-challenge-box {
@@ -559,7 +559,6 @@
     .case-detail-image {
         width: 100%;
         height: auto;
-        object-fit: cover;
     }
 
     .detail-skeleton-image {

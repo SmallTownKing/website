@@ -48,7 +48,7 @@
                 <div class="hero-summary">
                     我们依托100%持证专家团队与标准化SOP交付体系，深耕新能源、跨境金融、智能制造、房地产、社会服务、医疗健康等领域， 已成功交付100+深度数字化服务案例</div>
                 <button class="btn btn-primary consult-btn hero-consult-btn" onclick="openSolutionModal()">
-                    <span class="btn-text" >立即预约专家咨询</span>
+                    <span class="btn-text">立即预约专家咨询</span>
                     <img class="btn-icon" src="/assets/images/go.png" alt="立即预约" />
                 </button>
             </div>
@@ -137,28 +137,28 @@
                     </p>
                 </article>
                 <article class="service-card">
-                    <img src="/assets/images/icon11.svg" class="service-card-img" alt="满足复杂场景" />
+                    <img src="/assets/images/icon3.png" class="service-card-img" alt="满足复杂场景" />
                     <h3 class="service-card-title">满足复杂场景的高度定制需求</h3>
                     <p class="service-card-desc">
                         针对复杂业务、特殊安全需求及全新数字产品，提供全代码全链路定制，打造高性能专属解决方案。
                     </p>
                 </article>
                 <article class="service-card">
-                    <img src="/assets/images/icon11.svg" class="service-card-img" alt="办公与业务系统无缝协同" />
+                    <img src="/assets/images/icon4.svg" class="service-card-img" alt="办公与业务系统无缝协同" />
                     <h3 class="service-card-title">办公与业务系统无缝协同</h3>
                     <p class="service-card-desc">
                         将定制功能嵌入办公平台，实现原生体验、无需切换，提升协同效率。
                     </p>
                 </article>
                 <article class="service-card">
-                    <img src="/assets/images/icon11.svg" class="service-card-img" alt="保障核心数据安全" />
+                    <img src="/assets/images/icon5.png" class="service-card-img" alt="保障核心数据安全" />
                     <h3 class="service-card-title">保障核心数据安全与合规</h3>
                     <p class="service-card-desc">
                         针对敏感行业，提供全代码定制+私有化部署，保障数据自主可控与合规。
                     </p>
                 </article>
                 <article class="service-card">
-                    <img src="/assets/images/icon11.svg" class="service-card-img" alt="管理透明化" />
+                    <img src="/assets/images/icon6.png" class="service-card-img" alt="管理透明化" />
                     <h3 class="service-card-title">管理透明化、数据可驱动</h3>
                     <p class="service-card-desc">
                         实时看板、成本可视、利润可算，让经营从 “凭经验”变成“靠数据”。
@@ -328,7 +328,7 @@
                 <p class="lead-gen-desc">输入您的联系方式，让我们为您提供精准的行业洞察与落地建议</p>
 
                 <form class="lead-gen-form">
-                    <input class="form-input" type="text" placeholder="请输入您的姓名" aria-label="姓名" required />
+                    <input class="form-input" type="text" placeholder="请输入您的企业全称" aria-label="企业全称" required />
                     <input class="form-input" type="tel" placeholder="请输入您的电话" aria-label="电话" required />
                     <button type="submit" class="btn-submit">立即预约</button>
                 </form>
@@ -429,7 +429,8 @@
                         </div>
                         <div>
                             <div class="floating-contact-panel-item-title"
-                                style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;">预约咨询
+                                style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;"
+                                onclick="openSolutionModal()">预约咨询
                             </div>
                             <div class="floating-contact-panel-item-desc">留下您的联系方式，获取专属咨询服务</div>
                         </div>
@@ -443,6 +444,27 @@
             <div class="floating-contact-text">联系我们</div>
         </div>
     </div>
+    <div class="modal-overlay" id="successModal">
+        <div
+            style="width: 420px; height: 260px; border-radius: 16px; background-color: #FFF; position: relative; display: flex; flex-direction: column; align-items: center; z-index: 2; padding: 48px  0;">
+            <img src="/assets/images/success.svg"
+                style="width: 100%; height: 144px; position: absolute; z-index: 0; top: -24px" />
+            <img src="/assets/images/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSuccessModal()" />
+            <div style="position: relative; z-index: 1; height: 40px; line-height: 40px; font-size: 36px;">
+                <img src="/assets/images/success1.svg" />
+            </div>
+            <div
+                style="position: relative; z-index: 1; margin-top: 24px; font-size: 16px; color: #232323; height: 20px; line-height: 20px;">
+                感谢您的咨询，我们将尽快联系您～</div>
+            <div onclick="closeSuccessModal()"
+                style="position: relative; z-index: 1; margin-top: 40px; height: 40px;
+background: linear-gradient( 90deg, #23B2FF 0%, #6C57FF 100%);
+border-radius: 8px 8px 8px 8px; width: 272px; text-align: center; line-height: 40px; font-weight: 600; color: #FFF; font-size: 16px; cursor: pointer;">
+                知道了</div>
+        </div>
+    </div>
     <div class="modal-overlay" id="solutionModal">
         <div class="modal-container">
             <img src="/assets/images/close.png"
@@ -450,13 +472,15 @@
                 onclick="closeSolutionModal()" />
             <img src="/assets/images/consult.png" style="width: 100%; height: 120px; border-radius: 16px 16px 0 0;" />
             <form style="padding: 0 24px;" id="solutionForm">
-                <div style="height: 20px; line-height: 20px;  font-size: 14px;">1.企业全称</div>
+                <span style="height: 20px; line-height: 20px;  font-size: 14px;" class="require">1.企业全称</span>
                 <input id="userName" type="text" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
                     autocomplete="off" required />
-                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">2.手机号</div>
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">2.手机号</span>
                 <input id="userPhone" type="number" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
                     autocomplete="off" required />
-                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">3.您希望解决什么问题？</div>
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">3.您希望解决什么问题？</span>
                 <textarea id="userMessage" type="text" class="modal-input"
                     style="margin-top: 8px; resize: none; height: 100px; line-height: 20px; padding: 10px 12px; "
                     placeholder="请输入" autocomplete="off"></textarea>
@@ -468,6 +492,7 @@
                 </div>
             </form>
         </div>
+    </div>
 </body>
 
 </html>

@@ -3,6 +3,15 @@ document.addEventListener("DOMContentLoaded", function () {
     initLeadForm();
     initSolutionModal();
     void initCaseDetail();
+    const modal1 = document.getElementById('successModal');
+    window.openSuccessModal = function () {
+        modal1.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+    }
+    window.closeSuccessModal = function () {
+        modal1.classList.remove('is-active');
+        document.body.style.overflow = '';
+    }
 });
 
 function initHeader() {
@@ -107,13 +116,13 @@ function initLeadForm() {
             requestApi("/api/mql/add", {
                 method: "POST",
                 body: {
-                    clientName: nameValue,
+                    companyFullName: nameValue,
                     phoneNumber: phoneValue,
                 },
             })
                 .then(function () {
                     form.reset();
-                    alert("提交成功，我们会尽快与您联系。");
+                    openSuccessModal()
                 })
                 .catch(function (error) {
                     console.error("Lead form submit failed:", error);
@@ -175,7 +184,7 @@ function initSolutionModal() {
         const originalText = submitBtn.textContent;
 
         if (!nameValue) {
-            alert("请输入您的姓名。");
+            alert("请输入您的企业全称。");
             return;
         }
 
@@ -199,6 +208,8 @@ function initSolutionModal() {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 closeSolutionModal();
+                openSuccessModal()
+
             })
             .catch(function (error) {
                 console.error("Modal submit failed:", error);
@@ -222,6 +233,8 @@ async function initCaseDetail() {
 
     try {
         const response = await requestApi("/api/projectCase/detail/" + encodeURIComponent(caseId));
+        console.log(response)
+        window.document.title = response.data.projectName + " - 专注企业级软件开发 | 轻搭云";
         const rawData = response && (response.data || response.result || response);
         const caseData = normalizeDetailData(rawData);
         const imageIdList = collectDetailImageIds(caseData);

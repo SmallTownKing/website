@@ -2,6 +2,15 @@ document.addEventListener("DOMContentLoaded", function () {
     initHeader();
     initLeadForm();
     initSolutionModal();
+    const modal1 = document.getElementById('successModal');
+    window.openSuccessModal = function () {
+        modal1.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+    }
+    window.closeSuccessModal = function () {
+        modal1.classList.remove('is-active');
+        document.body.style.overflow = '';
+    }
 });
 
 function initHeader() {
@@ -108,13 +117,13 @@ function initLeadForm() {
             requestApi("/api/mql/add", {
                 method: "POST",
                 body: {
-                    clientName: nameValue,
+                    companyFullName: nameValue,
                     phoneNumber: phoneValue,
                 },
             })
                 .then(function () {
                     form.reset();
-                    alert("提交成功，我们会尽快与您联系。");
+                    openSuccessModal();
                 })
                 .catch(function (error) {
                     console.error("Lead form submit failed:", error);
@@ -175,11 +184,6 @@ function initSolutionModal() {
         const phoneReg = /^1[3-9]\d{9}$/;
         const originalText = submitBtn.textContent;
 
-        if (!nameValue) {
-            alert("请输入您的姓名。");
-            return;
-        }
-
         if (!phoneReg.test(phoneValue)) {
             alert("请输入正确的11位手机号。");
             return;
@@ -200,6 +204,7 @@ function initSolutionModal() {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 closeSolutionModal();
+                openSuccessModal();
             })
             .catch(function (error) {
                 console.error("Modal submit failed:", error);

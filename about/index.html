@@ -99,7 +99,7 @@
                             深圳市轻搭云科技有限公司成立于 2022 年，前身是一家深耕定制化开发的软件工作室，2024 年正式公司化运营，总部位于深圳，业务范围覆盖全国 10+
                             重点城市，专注于企业数字化建设。作为官方认证交付服务商，我们拥有 100%
                             持证的顾问与工程师团队，恪守标准化的交付流程与快速响应的售后服务体系，已为跨境贸易、高端制造、金融科技、公益组织等 10 余个行业的客户成功交付 100+ 数字化项目，客户复购率高达
-                            90%。我们深信，数字化不是一次性的项目交付，而是与企业共同成长的持续旅程。我们愿以“根植于信，交付于实”的初心，陪伴企业走好数字化转型每一步。
+                            60%。我们深信，数字化不是一次性的项目交付，而是与企业共同成长的持续旅程。我们愿以“根植于信，交付于实”的初心，陪伴企业走好数字化转型每一步。
                         </p>
                     </div>
                     <img src="/assets/images/logo.png" class="about-company__image" alt="轻搭云团队介绍视觉图" />
@@ -121,18 +121,18 @@
                     </article>
                     <article class="about-value-card">
                         <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
-                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
-                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                        <h3 class="about-value-card__title">深潜业务，匠心筑品</h3>
+                        <p class="about-value-card__desc">深挖痛点，用心打磨好用的产品</p>
                     </article>
                     <article class="about-value-card">
                         <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
-                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
-                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                        <h3 class="about-value-card__title">言行一致，做比说多</h3>
+                        <p class="about-value-card__desc">用行动兑现承诺，让成果代替空谈</p>
                     </article>
                     <article class="about-value-card">
                         <img src="/assets/images/image.png" class="about-value-card__icon" alt="" aria-hidden="true" />
-                        <h3 class="about-value-card__title">根植于信，交付于实</h3>
-                        <p class="about-value-card__desc">以诚信为本，交付稳定可靠的产品</p>
+                        <h3 class="about-value-card__title">稳中求进，共生长青</h3>
+                        <p class="about-value-card__desc">稳扎稳打，与客户和团队共成长</p>
                     </article>
                 </div>
             </section>
@@ -154,7 +154,7 @@
                 <p class="lead-gen-desc">输入您的联系方式，让我们为您提供精准的行业洞察与落地建议</p>
 
                 <form class="lead-gen-form">
-                    <input class="form-input" type="text" placeholder="请输入您的姓名" aria-label="姓名" required />
+                    <input class="form-input" type="text" placeholder="请输入您的企业全称" aria-label="姓名" required />
                     <input class="form-input" type="tel" placeholder="请输入您的电话" aria-label="电话" required />
                     <button type="submit" class="btn-submit">立即预约</button>
                 </form>
@@ -217,6 +217,27 @@
             </div>
         </div>
     </footer>
+    <div class="modal-overlay" id="successModal">
+        <div
+            style="width: 420px; height: 260px; border-radius: 16px; background-color: #FFF; position: relative; display: flex; flex-direction: column; align-items: center; z-index: 2; padding: 48px  0;">
+            <img src="/assets/images/success.svg"
+                style="width: 100%; height: 144px; position: absolute; z-index: 0; top: -24px" />
+            <img src="/assets/images/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSuccessModal()" />
+            <div style="position: relative; z-index: 1; height: 40px; line-height: 40px; font-size: 36px;">
+                <img src="/assets/images/success1.svg" />
+            </div>
+            <div
+                style="position: relative; z-index: 1; margin-top: 24px; font-size: 16px; color: #232323; height: 20px; line-height: 20px;">
+                感谢您的咨询，我们将尽快联系您～</div>
+            <div onclick="closeSuccessModal()"
+                style="position: relative; z-index: 1; margin-top: 40px; height: 40px;
+background: linear-gradient( 90deg, #23B2FF 0%, #6C57FF 100%);
+border-radius: 8px 8px 8px 8px; width: 272px; text-align: center; line-height: 40px; font-weight: 600; color: #FFF; font-size: 16px; cursor: pointer;">
+                知道了</div>
+        </div>
+    </div>
     <div class="modal-overlay" id="solutionModal">
         <div class="modal-container">
             <img src="/assets/images/close.png"
@@ -224,13 +245,15 @@
                 onclick="closeSolutionModal()" />
             <img src="/assets/images/consult.png" style="width: 100%; height: 120px; border-radius: 16px 16px 0 0;" />
             <form style="padding: 0 24px;" id="solutionForm">
-                <div style="height: 20px; line-height: 20px;  font-size: 14px;">1.企业全称</div>
+                <span style="height: 20px; line-height: 20px;  font-size: 14px;" class="require">1.企业全称</span>
                 <input id="userName" type="text" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
                     autocomplete="off" required />
-                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">2.手机号</div>
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">2.手机号</span>
                 <input id="userPhone" type="number" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
                     autocomplete="off" required />
-                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">3.您希望解决什么问题？</div>
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">3.您希望解决什么问题？</span>
                 <textarea id="userMessage" type="text" class="modal-input"
                     style="margin-top: 8px; resize: none; height: 100px; line-height: 20px; padding: 10px 12px; "
                     placeholder="请输入" autocomplete="off"></textarea>

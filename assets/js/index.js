@@ -14,10 +14,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById('solutionModal');
     const form = document.getElementById('solutionForm');
     const submitBtn = document.getElementById('submitBtn');
+    const modal1 = document.getElementById('successModal');
+    window.openSuccessModal = function () {
+        modal1.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+    }
+    window.closeSuccessModal = function () {
+        modal1.classList.remove('is-active');
+        document.body.style.overflow = '';
+    }
     window.openSolutionModal = function () {
         modal.classList.add('is-active');
         document.body.style.overflow = 'hidden';
     }
+
+
 
     window.closeSolutionModal = function () {
         modal.classList.remove('is-active');
@@ -53,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 closeSolutionModal();
+                openSuccessModal();
             })
             .catch(function (error) {
                 console.error("提交失败:", error);
@@ -543,7 +555,7 @@ function renderCaseItems(track, cases) {
 }
 
 function createCaseItemElement(caseItem, index) {
-    const wrapper = document.createElement("div");
+    const wrapper = document.createElement("a");
     const article = document.createElement("article");
     const category = document.createElement("div");
     const title = document.createElement("h3");
@@ -562,6 +574,8 @@ function createCaseItemElement(caseItem, index) {
     detailLink.className = "btn-case-detail";
     detailLink.href = caseItem.detailUrl || "#";
     detailLink.target = "_blank";
+    wrapper.href = caseItem.detailUrl || "#";
+    wrapper.target = "_blank";
     category.textContent = caseItem.category;
     title.textContent = caseItem.title;
     description.textContent = caseItem.description;
@@ -829,13 +843,14 @@ function initLeadForm() {
             requestApi("/api/mql/add", {
                 method: "POST",
                 body: {
-                    clientName: nameValue,
+                    companyFullName: nameValue,
                     phoneNumber: phoneValue,
                 },
             })
                 .then(function () {
                     form.reset();
-                    alert("提交成功，我们会尽快与您联系。");
+                    openSuccessModal();
+
                 })
                 .catch(function (error) {
                     console.error("Lead form submit failed:", error);

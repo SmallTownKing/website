@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跨境一体化业务平台案例 - 专注企业级软件开发 | 轻搭云</title>
+    <title>专注企业级软件开发 | 轻搭云</title>
     <meta name="description" content="轻搭云为某礼品定制领军企业构建的一站式跨境业务闭环案例。通过PaaS平台集成自动化订单流转与智能报关，使订单处理周期缩短35%。">
     <meta name="keywords" content="企业级软件开发, 数字化解决方案, PaaS定制, 跨境电商系统, 自动化订单流转, 智能报关">
 
@@ -165,7 +165,7 @@
                 <p class="lead-gen-desc">输入您的联系方式，让我们为您提供精准的行业洞察与落地建议</p>
 
                 <form class="lead-gen-form">
-                    <input class="form-input" type="text" placeholder="请输入您的姓名" aria-label="姓名" required />
+                    <input class="form-input" type="text" placeholder="请输入您的企业全称" aria-label="姓名" required />
                     <input class="form-input" type="tel" placeholder="请输入您的电话" aria-label="电话" required />
                     <button type="submit" class="btn-submit">立即预约</button>
                 </form>
@@ -227,6 +227,27 @@
             </div>
         </div>
     </footer>
+    <div class="modal-overlay" id="successModal">
+        <div
+            style="width: 420px; height: 260px; border-radius: 16px; background-color: #FFF; position: relative; display: flex; flex-direction: column; align-items: center; z-index: 2; padding: 48px  0;">
+            <img src="/assets/images/success.svg"
+                style="width: 100%; height: 144px; position: absolute; z-index: 0; top: -24px" />
+            <img src="/assets/images/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSuccessModal()" />
+            <div style="position: relative; z-index: 1; height: 40px; line-height: 40px; font-size: 36px;">
+                <img src="/assets/images/success1.svg" />
+            </div>
+            <div
+                style="position: relative; z-index: 1; margin-top: 24px; font-size: 16px; color: #232323; height: 20px; line-height: 20px;">
+                感谢您的咨询，我们将尽快联系您～</div>
+            <div onclick="closeSuccessModal()"
+                style="position: relative; z-index: 1; margin-top: 40px; height: 40px;
+background: linear-gradient( 90deg, #23B2FF 0%, #6C57FF 100%);
+border-radius: 8px 8px 8px 8px; width: 272px; text-align: center; line-height: 40px; font-weight: 600; color: #FFF; font-size: 16px; cursor: pointer;">
+                知道了</div>
+        </div>
+    </div>
     <div class="modal-overlay" id="solutionModal">
         <div class="modal-container">
             <img src="/assets/images/close.png"
@@ -234,13 +255,15 @@
                 onclick="closeSolutionModal()" />
             <img src="/assets/images/consult.png" style="width: 100%; height: 120px; border-radius: 16px 16px 0 0;" />
             <form style="padding: 0 24px;" id="solutionForm">
-                <div style="height: 20px; line-height: 20px;  font-size: 14px;">1.企业全称</div>
+                <span style="height: 20px; line-height: 20px;  font-size: 14px;" class="require">1.企业全称</span>
                 <input id="userName" type="text" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
                     autocomplete="off" required />
-                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">2.手机号</div>
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">2.手机号</span>
                 <input id="userPhone" type="number" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
                     autocomplete="off" required />
-                <div style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;">3.您希望解决什么问题？</div>
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">3.您希望解决什么问题？</span>
                 <textarea id="userMessage" type="text" class="modal-input"
                     style="margin-top: 8px; resize: none; height: 100px; line-height: 20px; padding: 10px 12px; "
                     placeholder="请输入" autocomplete="off"></textarea>
