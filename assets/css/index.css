@@ -1130,7 +1130,21 @@ ul {
 
 .partner-row-3 {
     display: flex;
-    margin: 0 452px;
+    margin: 28px 264px 0;
+    column-gap: 28px;
+}
+
+.partner-row-4 {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+    column-gap: 28px;
+}
+
+.partner-row-5 {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
     column-gap: 28px;
 }
 
@@ -1570,7 +1584,9 @@ body.mobile-menu-open {
 
     .partner-row-1,
     .partner-row-2,
-    .partner-row-3 {
+    .partner-row-3,
+    .partner-row-4,
+    .partner-row-5 {
         margin: 0;
         justify-content: center;
         flex-wrap: wrap;
@@ -2027,7 +2043,9 @@ body.mobile-menu-open {
 
     .partner-row-1,
     .partner-row-2,
-    .partner-row-3 {
+    .partner-row-3,
+    .partner-row-4,
+    .partner-row-5 {
         gap: 16px;
     }
 
