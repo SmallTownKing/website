@@ -237,20 +237,8 @@ async function initCaseDetail() {
         window.document.title = response.data.projectName + " - 专注企业级软件开发 | 轻搭云";
         const rawData = response && (response.data || response.result || response);
         const caseData = normalizeDetailData(rawData);
-        const imageIdList = collectDetailImageIds(caseData);
-        let urlMap = {};
-
-        if (imageIdList.length) {
-            try {
-                const imageResponse = await requestApi("/api/file/getFileTmpUrl?fileIds=" + imageIdList.join(","));
-                urlMap = normalizeDetailImageUrlMap(imageResponse);
-            } catch (imageError) {
-                console.error("Failed to resolve detail image urls:", imageError);
-            }
-        }
-
-        renderCaseBanner(caseData, urlMap);
-        renderCaseContent(caseData, urlMap);
+        renderCaseBanner(caseData);
+        renderCaseContent(caseData);
 
         document.getElementById("page-loading").style.display = "none";
         document.getElementById("page-content").style.display = "block";
@@ -271,7 +259,7 @@ function normalizeDetailData(raw) {
             category: "成功案例",
             title: "",
             description: "",
-            bannerImageId: "",
+            bannerImageUrl: "",
             metrics: [],
             background: "",
             challenges: [],
@@ -281,13 +269,16 @@ function normalizeDetailData(raw) {
 
     const titleBackgroundImages = Array.isArray(raw.titleBackgroundImage) ? raw.titleBackgroundImage : [];
     const detailImages = Array.isArray(raw.contentImage) ? raw.contentImage : [];
+    const firstTitleBackgroundImage = titleBackgroundImages[0] || {};
+    const firstContentImage = detailImages[0] || {};
 
     return {
         category: raw.industry || raw.category || "成功案例",
         title: raw.projectName || raw.title || "",
         description: raw.companyIntroduction || raw.description || "",
-        bannerImageId:
-            (titleBackgroundImages[0] && titleBackgroundImages[0].fileToken) ||
+        bannerImageUrl:
+            firstTitleBackgroundImage.url ||
+            firstContentImage.url ||
             raw.imageUrl ||
             raw.cover ||
             raw.image ||
@@ -297,22 +288,6 @@ function normalizeDetailData(raw) {
         challenges: getChallenges(raw),
         details: getDetails(raw, detailImages),
     };
-}
-
-function collectDetailImageIds(data) {
-    const ids = [];
-
-    if (needsImageResolution(data.bannerImageId)) {
-        ids.push(data.bannerImageId);
-    }
-
-    (data.details || []).forEach(function (item) {
-        if (needsImageResolution(item.imageId)) {
-            ids.push(item.imageId);
-        }
-    });
-
-    return Array.from(new Set(ids));
 }
 
 function getChallenges(raw) {
@@ -342,18 +317,18 @@ function getDetails(raw, detailImages) {
         {
             title: raw.sectionTitle1,
             content: raw.sectionContent1,
-            imageId: detailImages[0] ? detailImages[0].fileToken : "",
+            imageUrl: detailImages[0] ? detailImages[0].url : "",
         },
         {
             title: raw.sectionTitle2,
             content: raw.sectionContent2,
-            imageId: detailImages[1] ? detailImages[1].fileToken : "",
+            imageUrl: detailImages[1] ? detailImages[1].url : "",
         },
     ].filter(function (item) {
         return Boolean(
             String(item.title || "").trim() ||
             String(item.content || "").trim() ||
-            String(item.imageId || "").trim()
+            String(item.imageUrl || "").trim()
         );
     });
 }
@@ -372,7 +347,7 @@ function formatMetricValue(value, suffix) {
     return value * 100 + suffix;
 }
 
-function renderCaseBanner(data, urlMap) {
+function renderCaseBanner(data) {
     const titleEl = document.querySelector(".case-banner-title");
     const descEl = document.querySelector(".case-banner-desc");
     const categoryEl = document.querySelector(".case-banner-tag");
@@ -394,7 +369,7 @@ function renderCaseBanner(data, urlMap) {
     }
 
     if (bannerImgEl) {
-        const realBgUrl = resolveDetailImageUrl(data.bannerImageId, urlMap) || "/assets/images/1.jpg";
+        const realBgUrl = data.bannerImageUrl || "/assets/images/1.jpg";
         bannerImgEl.style.backgroundImage = 'url("' + realBgUrl.replace(/"/g, '\\"') + '")';
     }
 
@@ -419,7 +394,7 @@ function renderCaseBanner(data, urlMap) {
     }
 }
 
-function renderCaseContent(data, urlMap) {
+function renderCaseContent(data) {
     const wrapper = document.querySelector(".case-content-wrapper");
 
     if (!wrapper) {
@@ -497,74 +472,17 @@ function renderCaseContent(data, urlMap) {
             fragment.appendChild(detailDesc);
         }
 
-        if (item.imageId) {
+        if (item.imageUrl) {
             const detailImg = document.createElement("img");
-            const realImgUrl = resolveDetailImageUrl(item.imageId, urlMap) || "/assets/images/1.jpg";
 
             detailImg.className = "case-detail-image";
-            detailImg.src = realImgUrl;
+            detailImg.src = item.imageUrl;
             detailImg.alt = item.title || "详情图片";
             fragment.appendChild(detailImg);
         }
     });
 
     wrapper.appendChild(fragment);
-}
-
-function resolveDetailImageUrl(source, urlMap) {
-    return urlMap[source] || source || "";
-}
-
-function normalizeDetailImageUrlMap(response) {
-    const payload = response && (response.data || response.result || response);
-    const map = {};
-
-    if (Array.isArray(payload)) {
-        payload.forEach(function (item) {
-            if (typeof item === "string") {
-                return;
-            }
-
-            if (!item || typeof item !== "object") {
-                return;
-            }
-
-            const fileId = item.fileToken || item.fileId || item.id;
-            const url = item.tmpDownloadUrl || item.url || item.fileUrl || item.tmpUrl;
-
-            if (fileId && url) {
-                map[fileId] = url;
-            }
-        });
-
-        return map;
-    }
-
-    if (payload && typeof payload === "object") {
-        Object.keys(payload).forEach(function (key) {
-            const value = payload[key];
-            const url =
-                typeof value === "string"
-                    ? value
-                    : value && (value.tmpDownloadUrl || value.url || value.fileUrl || value.tmpUrl);
-
-            if (url) {
-                map[key] = url;
-            }
-        });
-    }
-
-    return map;
-}
-
-function needsImageResolution(url) {
-    const source = String(url || "").trim();
-
-    if (!source) {
-        return false;
-    }
-
-    return !/^(https?:)?\/\//.test(source) && !/^(data:|blob:|\/|\.)/.test(source);
 }
 
 function requestApi(url, options) {

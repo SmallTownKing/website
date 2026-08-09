@@ -291,7 +291,6 @@ async function initProductsPage() {
 
     try {
         allProducts = await fetchProductsContent(apiConfig, createDefaultAllTab());
-        allProducts = await hydrateProductImages(allProducts);
     } catch (error) {
         console.warn("Failed to load product content:", error);
         allProducts = [];
@@ -635,81 +634,6 @@ function createProductCard(product) {
     return article;
 }
 
-async function hydrateProductImages(products) {
-    const nextProducts = Array.isArray(products) ? products.slice() : [];
-    const fileIds = Array.from(
-        new Set(
-            nextProducts
-                .map(function (product) {
-                    return product.imageUrl;
-                })
-                .filter(function (imageUrl) {
-                    return needsImageResolution(imageUrl);
-                })
-        )
-    );
-
-    if (!fileIds.length) {
-        return nextProducts.map(function (product) {
-            return Object.assign({}, product, {
-                imageRenderUrl: product.imageUrl || PRODUCT_IMAGE_FALLBACK,
-            });
-        });
-    }
-
-    let urlMap = {};
-
-    try {
-        const response = await requestApi("/api/file/getFileTmpUrl?fileIds=" + fileIds.join(","));
-        urlMap = normalizeImageUrlMap(response);
-    } catch (error) {
-        console.warn("Failed to resolve product images:", error);
-    }
-
-    return nextProducts.map(function (product) {
-        return Object.assign({}, product, {
-            imageRenderUrl: urlMap[product.imageUrl] || product.imageUrl || PRODUCT_IMAGE_FALLBACK,
-        });
-    });
-}
-
-function normalizeImageUrlMap(response) {
-    const payload = pickFirstValue(response && response.data, response && response.result, response);
-    const map = {};
-
-    if (Array.isArray(payload)) {
-        payload.forEach(function (item) {
-            if (!item || typeof item !== "object") {
-                return;
-            }
-
-            const fileId = pickFirstValue(item.fileToken, item.fileId, item.id);
-            const imageUrl = pickFirstValue(item.tmpDownloadUrl, item.url, item.fileUrl, item.tmpUrl);
-
-            if (fileId && imageUrl) {
-                map[fileId] = imageUrl;
-            }
-        });
-
-        return map;
-    }
-
-    if (payload && typeof payload === "object") {
-        Object.keys(payload).forEach(function (key) {
-            const value = payload[key];
-            const imageUrl = typeof value === "string"
-                ? value
-                : pickFirstValue(value && value.tmpDownloadUrl, value && value.url, value && value.fileUrl, value && value.tmpUrl);
-
-            if (imageUrl) {
-                map[key] = imageUrl;
-            }
-        });
-    }
-
-    return map;
-}
-
 function normalizeTabItem(item, index) {
     if (!item) {
         return null;
@@ -777,6 +701,9 @@ function normalizeProductItem(item, index) {
     );
 
     const imageUrl = pickFirstValue(
+        item.contentImage && item.contentImage[0]
+            ? resolveMediaValue(item.contentImage[0].url)
+            : "",
         resolveMediaValue(item.imageUrl),
         resolveMediaValue(item.cover),
         resolveMediaValue(item.image),
@@ -784,7 +711,6 @@ function normalizeProductItem(item, index) {
         resolveMediaValue(item.background),
         resolveMediaValue(item.titleBackgroundImage),
         resolveMediaValue(item.coverImage),
-        resolveMediaValue(item.contentImage),
         resolveMediaValue(item.imageList)
     );
 
@@ -1085,16 +1011,6 @@ function resolveMediaValue(value) {
     }
 
     return "";
-}
-
-function needsImageResolution(value) {
-    const source = String(value || "").trim();
-
-    if (!source) {
-        return false;
-    }
-
-    return !/^(https?:)?\/\//.test(source) && !/^(data:|blob:|\/|\.)/.test(source);
 }
 
 function uniqueValues(values) {

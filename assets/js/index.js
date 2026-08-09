@@ -482,11 +482,10 @@ function prepareCasesForRender() {
             return [];
         }
 
-        return hydrateCaseImages(cases).then(function (hydratedCases) {
-            return preloadCaseImages(hydratedCases).then(function () {
-                return hydratedCases;
+        return preloadCaseImages(cases).then(function () {
+                return cases;
             });
-        });
+        
     });
 }
 
@@ -522,6 +521,8 @@ function normalizeCaseItem(item, index) {
 
     const titleBackgroundImage = Array.isArray(item.titleBackgroundImage) ? item.titleBackgroundImage : [];
     const firstBackgroundImage = titleBackgroundImage[0] || {};
+    const contentImage = Array.isArray(item.contentImage) ? item.contentImage : [];
+    const firstContentImage = contentImage[0] || {};
     const recordId = item.recordId || item.id || index + 1;
 
     return {
@@ -531,7 +532,7 @@ function normalizeCaseItem(item, index) {
         metrics: normalizeCaseMetrics(item),
         detailUrl: item.detailUrl || item.url || item.href || item.link || "/products/detail/?id=" + encodeURIComponent(recordId),
         detailText: item.detailText || item.buttonText || "查看案例详情",
-        imageUrl: item.imageUrl || item.image || item.cover || item.background || item.banner || firstBackgroundImage.fileToken || "",
+        imageUrl: firstContentImage.url || item.imageUrl || item.image || item.cover || item.background || item.banner || firstBackgroundImage.fileToken || "",
         imageClassName: item.imageClassName || item.imageClass || getDefaultCaseImageClass(index),
     };
 }
@@ -645,7 +646,7 @@ function hydrateCaseImages(cases) {
         return Promise.resolve(cases.slice());
     }
 
-    return requestApi("/api/file/getFileTmpUrl?fileIds=" + fileIds.join(","))
+    return Promise.resolve(cases.slice())
         .then(function (response) {
             const urlMap = normalizeCaseImageUrlMap(response);
 
