@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专注企业级软件开发 - 为各行业提供一站式数字化解决方案 | 轻搭云</title>
+    <meta name="description"
+        content="轻搭云专注企业级软件开发，提供一站式数字化解决方案。涵盖PaaS深度定制、SaaS二开、全代码开发、APP小程序开发、API集成及数字营销，助力企业全方位数字化转型。点击了解成功案例和定制服务。">
+    <meta name="keywords" content="企业级软件开发, 数字化解决方案, PaaS定制, SaaS二开, 全代码定制, APP开发, 小程序开发, API集成, 数字营销">
+    <link rel="icon" href="/assets/favicon-BFv3KEcr.ico" type="image/x-icon">
+    <script src="./assets/js/page-visit.js" defer></script>
+    <script src="./assets/js/index.js" defer></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BgMxZc1x.css">
+</head>
+
+<body>
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <div class="logo">
+                <div aria-label="轻搭云科技Logo">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo.svg" alt="轻搭云科技" class="header-logo-img" />
+                </div>
+            </div>
+            <button class="header-menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"
+                aria-label="打开导航菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header-actions" id="site-nav">
+                <nav class="nav" aria-label="主导航">
+                    <ul>
+                        <li><a href="/" class="active">首页</a></li>
+                        <li><a href="/products/">成功案例</a></li>
+                        <li><a href="/about/">关于我们</a></li>
+                    </ul>
+                </nav>
+                <button class="btn btn-primary" onclick="openSolutionModal()">预约咨询</button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-eyebrow">专注企业级软件开发</div>
+                <div class="hero-heading">为各行业提供一站式数字化解决方案</div>
+                <div class="hero-summary">
+                    我们依托100%持证专家团队与标准化SOP交付体系，深耕新能源、跨境金融、智能制造、房地产、社会服务、医疗健康等领域， 已成功交付100+深度数字化服务案例</div>
+                <button class="btn btn-primary consult-btn hero-consult-btn" onclick="openSolutionModal()">
+                    <span class="btn-text">立即预约专家咨询</span>
+                    <img class="btn-icon" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/go.png" alt="立即预约" />
+                </button>
+            </div>
+            <div class="hero-cards-grid">
+                <article class="hero-card">
+                    <div class="icon-placeholder system-icon" aria-label="全代码开发图标">
+                        <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon1.svg" class="hero-card-img" alt="全代码开发" />
+                    </div>
+                    <div class="hero-card-content">
+                        <h3 class="hero-card-title">全代码开发</h3>
+                        <p class="hero-card-desc">深度定制，自主可控</p>
+                    </div>
+                </article>
+                <article class="hero-card">
+                    <div class="icon-placeholder system-icon" aria-label="PaaS平台定制开发图标">
+                        <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon2.svg" class="hero-card-img" alt="PaaS平台定制开发" />
+                    </div>
+                    <div class="hero-card-content">
+                        <h3 class="hero-card-title">PaaS平台定制开发</h3>
+                        <p class="hero-card-desc">敏捷开发，开箱即用</p>
+                    </div>
+                </article>
+                <article class="hero-card">
+                    <div class="icon-placeholder system-icon" aria-label="企业集成服务开发图标">
+                        <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon3.svg" class="hero-card-img" alt="企业集成服务开发" />
+                    </div>
+                    <div class="hero-card-content">
+                        <h3 class="hero-card-title">企业集成服务开发</h3>
+                        <p class="hero-card-desc">数据互通，业务协同</p>
+                    </div>
+                </article>
+                <article class="hero-card">
+                    <div class="icon-placeholder system-icon" aria-label="SaaS平台二开图标">
+                        <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon4.svg" class="hero-card-img" alt="SaaS平台二开" />
+                    </div>
+                    <div class="hero-card-content">
+                        <h3 class="hero-card-title">SaaS平台二开</h3>
+                        <p class="hero-card-desc">原生体验，无缝提效</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="issues" class="issues container">
+            <h2 class="section-title text-center">您是否遇到这些瓶颈</h2>
+            <div class="issues-content">
+                <div class="img-placeholder issues-illustration-placeholder" aria-label="瓶颈插画">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/question.svg" alt="瓶颈问题分析" />
+                    <article class="issue-card issue-card-l1">
+                        <p>标准SaaS软件无法适配企业独特业务流程</p>
+                    </article>
+                    <article class="issue-card issue-card-l2">
+                        <p>数字化落地周期长、成本高，难以快速见成效</p>
+                    </article>
+                    <article class="issue-card issue-card-l3">
+                        <p>多系统数据不互通，形成独立信息孤岛</p>
+                    </article>
+                    <article class="issue-card issue-card-r1">
+                        <p>办公与业务系统脱节，协同效率低下</p>
+                    </article>
+                    <article class="issue-card issue-card-r2">
+                        <p>复杂业务场景无法实现，需高度定制企业特有的流程</p>
+                    </article>
+                    <article class="issue-card issue-card-r3">
+                        <p>系统安全无保障，核心数据易泄露</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="container bg-light services">
+            <h2 class="section-title1 text-center">轻搭云定制开发服务为您解决</h2>
+            <div class="services-grid">
+                <article class="service-card">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon11.svg" class="service-card-img" alt="PaaS平台深度定制开发" />
+                    <h3 class="service-card-title">PaaS平台深度定制开发</h3>
+                    <p class="service-card-desc">
+                        依托主流低代码平台，全面满足您企业从部门级应用到企业级集成的数字化需求。
+                    </p>
+                </article>
+                <article class="service-card">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon12.svg" class="service-card-img" alt="打破数据孤岛" />
+                    <h3 class="service-card-title">打破数据孤岛，实现数据协同</h3>
+                    <p class="service-card-desc">
+                        把散落在各个系统的数据连起来，统一管理、实时同步，让业务协同更顺畅。
+                    </p>
+                </article>
+                <article class="service-card">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon3.png" class="service-card-img" alt="满足复杂场景" />
+                    <h3 class="service-card-title">满足复杂场景的高度定制需求</h3>
+                    <p class="service-card-desc">
+                        针对复杂业务、特殊安全需求及全新数字产品，提供全代码全链路定制，打造高性能专属解决方案。
+                    </p>
+                </article>
+                <article class="service-card">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon4.svg" class="service-card-img" alt="办公与业务系统无缝协同" />
+                    <h3 class="service-card-title">办公与业务系统无缝协同</h3>
+                    <p class="service-card-desc">
+                        将定制功能嵌入办公平台，实现原生体验、无需切换，提升协同效率。
+                    </p>
+                </article>
+                <article class="service-card">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon5.png" class="service-card-img" alt="保障核心数据安全" />
+                    <h3 class="service-card-title">保障核心数据安全与合规</h3>
+                    <p class="service-card-desc">
+                        针对敏感行业，提供全代码定制+私有化部署，保障数据自主可控与合规。
+                    </p>
+                </article>
+                <article class="service-card">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon6.png" class="service-card-img" alt="管理透明化" />
+                    <h3 class="service-card-title">管理透明化、数据可驱动</h3>
+                    <p class="service-card-desc">
+                        实时看板、成本可视、利润可算，让经营从 “凭经验”变成“靠数据”。
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section id="capabilities" class="capabilities capabilities-section">
+            <div class="container">
+                <h2 class="text-center capabilities-title">四大核心业务能力</h2>
+                <div class="cap-grid">
+                    <article class="cap-card">
+                        <img class="card-icon-bg" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/01.svg" alt="全代码定制开发" />
+                        <h3 class="card-title">全代码定制开发</h3>
+                        <div class="info-label">核心价值：</div>
+                        <p class="info-desc">为高度复杂、个性化业务场景，打造专属核心竞争力</p>
+                        <div class="info-label">解决问题：</div>
+                        <p class="info-desc">满足特殊要求与复杂业务逻辑，从零构建全新数字产品</p>
+                        <div class="info-label">我们能做：</div>
+                        <p class="info-desc desc-last">以前沿技术栈+严谨软件工程，交付高性能、高可维护的专属解决方案</p>
+                        <button class="btn btn-primary consult-btn" onclick="openSolutionModal()">
+                            <span class="btn-text">立即预约专家咨询</span>
+                            <img class="btn-icon" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/go.png" alt="立即预约" />
+                        </button>
+                    </article>
+                    <article class="cap-card">
+                        <img class="card-icon-bg" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/02.svg" alt="PaaS平台定制开发" />
+                        <h3 class="card-title">PaaS平台定制开发</h3>
+                        <div class="info-label">核心价值：</div>
+                        <p class="info-desc">基于主流PaaS平台，快速构建灵活可演进的业务系统，显著降低开发成本</p>
+                        <div class="info-label">解决问题：</div>
+                        <p class="info-desc">化解标准SaaS软件无法适配独特业务流程、管理需求的难题</p>
+                        <div class="info-label">我们能做：</div>
+                        <p class="info-desc desc-last">依托飞书、轻流等，定制开发CRM、ERP等系统，平台化架构支撑未来持续扩展</p>
+                        <button class="btn btn-primary consult-btn" onclick="openSolutionModal()">
+                            <span class="btn-text">立即预约专家咨询</span>
+                            <img class="btn-icon" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/go.png" alt="立即预约" />
+                        </button>
+                    </article>
+                    <article class="cap-card">
+                        <img class="card-icon-bg" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/03.svg" alt="企业集成服务开发" />
+                        <h3 class="card-title">企业集成服务开发</h3>
+                        <div class="info-label">核心价值：</div>
+                        <p class="info-desc">让数据自由流动，释放资产价值，助力决策有据可依</p>
+                        <div class="info-label">解决问题：</div>
+                        <p class="info-desc">告别系统割裂、手工报表、数据对不上的困扰</p>
+                        <div class="info-label">我们能做：</div>
+                        <p class="info-desc desc-last">以API和中间件为桥梁，打通系统经络，构建统一、实时、可信的数据中枢</p>
+                        <button class="btn btn-primary consult-btn" onclick="openSolutionModal()">
+                            <span class="btn-text">立即预约专家咨询</span>
+                            <img class="btn-icon" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/go.png" alt="立即预约" />
+                        </button>
+                    </article>
+                    <article class="cap-card">
+                        <img class="card-icon-bg" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/04.svg" alt="SaaS平台二次开发" />
+                        <h3 class="card-title">SaaS平台二次开发</h3>
+                        <div class="info-label">核心价值：</div>
+                        <p class="info-desc">在熟悉的办公环境扩展能力，提升用户采纳率与协同效率</p>
+                        <div class="info-label">解决问题：</div>
+                        <p class="info-desc">希望在企业微信、钉钉、飞书内无缝使用定制功能</p>
+                        <div class="info-label">我们能做：</div>
+                        <p class="info-desc desc-last">生态深度集成定制应用，实现原生体验、消息推送、流程植入</p>
+                        <button class="btn btn-primary consult-btn" onclick="openSolutionModal()">
+                            <span class="btn-text">立即预约专家咨询</span>
+                            <img class="btn-icon" src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/go.png" alt="立即预约" />
+                        </button>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="cases" class="cases container overflow-hidden">
+            <h2 class="section-title2 text-center">100+成功案例</h2>
+            <div class="cases-view-all-wrap">
+                <a href="/products/" class="btn-view-all">查看全部案例 ></a>
+            </div>
+            <div class="cases-carousel" data-cases-carousel>
+                <div class="carousel-track-inner" aria-live="polite" aria-busy="true">
+                    <div class="case-items-wrapper case-items-wrapper--skeleton" data-carousel-skeleton>
+                        <article class="case-article-card case-article-card--skeleton" aria-hidden="true"></article>
+                    </div>
+                    <div class="case-items-wrapper case-items-wrapper--skeleton" data-carousel-skeleton>
+                        <article class="case-article-card case-article-card--skeleton" aria-hidden="true"></article>
+                    </div>
+                    <div class="case-items-wrapper case-items-wrapper--skeleton" data-carousel-skeleton>
+                        <article class="case-article-card case-article-card--skeleton" aria-hidden="true"></article>
+                    </div>
+                </div>
+            </div>
+            <div class="cases-carousel-controls" aria-label="案例轮播切换">
+                <button class="carousel-nav-btn carousel-nav-btn-prev" type="button" aria-label="上一组案例"
+                    data-carousel-prev disabled>
+                    <span class="carousel-nav-icon" aria-hidden="true">&larr;</span>
+                </button>
+                <button class="carousel-nav-btn carousel-nav-btn-next" type="button" aria-label="下一组案例"
+                    data-carousel-next disabled>
+                    <span class="carousel-nav-icon" aria-hidden="true">&rarr;</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="why-us" class="why-us">
+            <div class="container why-us-container">
+                <h2 class="section-title text-center why-us-title">为什么选择我们</h2>
+                <div class="why-us-banner">
+                    <article class="feature-card">
+                        <div class="feature-header">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon.png" class="feature-icon" alt="行业见证" />
+                            <h4 class="feature-title">行业见证</h4>
+                        </div>
+                        <p class="feature-desc">
+                            我们深耕新能源、跨境金融、智能制造、房地产、社会服务等领域，累计交付100+深度数字化案例。复杂跨境流程、行业合规要求、多系统协同——这些我们都有成熟的解决方案与实战经验，能够快速理解您的业务本质，少走弯路。
+                        </p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-header">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon1.png" class="feature-icon" alt="全员持证作业" />
+                            <h4 class="feature-title">全员持证作业</h4>
+                        </div>
+                        <p class="feature-desc">
+                            交付团队100%持证上岗——全员拥有飞书官方认证各类工程师资质。这不仅是专业能力的背书，更是项目交付的保障：我们懂平台、懂技术、更懂如何将您的业务需求转化为可落地的解决方案，做您值得信赖的技术合伙人。
+                        </p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-header">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/icon2.png" class="feature-icon" alt="标准化交付体系" />
+                            <h4 class="feature-title">标准化交付体系</h4>
+                        </div>
+                        <p class="feature-desc">
+                            无论采用全代码定制还是低代码构建，我们的标准化交付流程（SOP）贯穿始终：全生命周期可追溯、可度量，项目管理透明可控。您随时可以介入查验，让交付成果真正贴合业务需求，省心、放心、有保障。
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="partners" class="partners container partners-section">
+            <h2 class="partners-title">合作伙伴</h2>
+            <div class="partners-grid-wrapper">
+                <div class="partner-row-1">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo1.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo2.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo3.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo4.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo5.png" class="partner-logo" alt="合作伙伴品牌" />
+                </div>
+                <div class="partner-row-2">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo6.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo7.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo8.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo9.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo10.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo11.png" class="partner-logo" alt="合作伙伴品牌" />
+                </div>
+                <div class="partner-row-3">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo12.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo13.png" class="partner-logo" alt="合作伙伴品牌" />
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo14.png" class="partner-logo" alt="合作伙伴品牌" />
+                </div>
+            </div>
+        </section>
+
+        <section id="lead-gen" class="lead-gen container lead-gen-section">
+            <div style="margin: 0 auto; max-width: 1200px;">
+                <h2 class="lead-gen-title">预约您的数字化转型专家诊断</h2>
+                <p class="lead-gen-desc">输入您的联系方式，让我们为您提供精准的行业洞察与落地建议</p>
+
+                <form class="lead-gen-form">
+                    <input class="form-input" type="text" placeholder="请输入您的企业全称" aria-label="企业全称" required />
+                    <input class="form-input" type="tel" placeholder="请输入您的电话" aria-label="电话" required />
+                    <button type="submit" class="btn-submit">立即预约</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/logo.svg" alt="轻搭云科技" class="footer-logo" />
+                    <div class="footer-brand-desc">
+                        深圳市轻搭云科技有限公司，专注于企业数字化建设。 官方认证交付服务商，致力于为企业打造随业务持续进化的数字基座。
+                    </div>
+                </div>
+                <div class="footer-column footer-column-contact">
+                    <div class="footer-column-title">联系方式</div>
+                    <div class="footer-column-list">
+                        <div class="footer-column-item">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/phone.svg" />
+                            <div>17841021398</div>
+                        </div>
+                        <div class="footer-column-item">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/email.svg" />
+                            <div>youwei@qindayun.cn</div>
+                        </div>
+                        <div class="footer-column-item">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/wechat.svg" />
+                            <div>gzsqyw</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-column footer-column-cert">
+                    <div class="footer-column-title">官方认证资质</div>
+                    <div class="footer-column-list">
+                        <div class="footer-column-item">
+                            <div style="width: 2px; height: 2px; border-radius: 50%; background-color: #696969;"></div>
+                            <div>PaaS交付认证</div>
+                        </div>
+                        <div class="footer-column-item">
+                            <div style="width: 2px; height: 2px; border-radius: 50%; background-color: #696969;"></div>
+                            <div>全代码开发规范</div>
+                        </div>
+                        <div class="footer-column-item">
+                            <div style="width: 2px; height: 2px; border-radius: 50%; background-color: #696969;"></div>
+                            <div>行业标杆服务商</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-column footer-column-wechat">
+                    <div class="footer-column-title">添加专家微信</div>
+                    <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/wx.jpg" style="width: 88px; height: 88px;" />
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <div>© 2025 深圳市轻搭云科技有限公司. ALL RIGHTS RESERVED.</div>
+                <div>粤ICP备2026014454号-1</div>
+            </div>
+        </div>
+    </footer>
+    <div class="floating-contact" data-floating-contact>
+        <div class="floating-contact-panel" id="floating-contact-panel" hidden>
+            <div class="floating-contact-panel-header">
+                <div class="floating-contact-panel-label">请拨打官方电话</div>
+                <a class="floating-contact-panel-phone" href="tel:17841021398">17841021398</a>
+                <div class="floating-contact-panel-region">中国</div>
+            </div>
+            <div class="floating-contact-panel-body">
+                <div class="floating-contact-panel-main">
+                    <div class="floating-contact-panel-item">
+                        <div class="floating-contact-panel-item-icon">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/wechat1.svg" alt="微信咨询" />
+                        </div>
+                        <div>
+                            <div class="floating-contact-panel-item-title">微信咨询</div>
+                            <div class="floating-contact-panel-item-desc">扫码添加企业微信，与业务代表开启交流</div>
+                        </div>
+                    </div>
+                    <div class="floating-contact-panel-qr">
+                        <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/business.jpg" style="width: 88px; height: 88px; display: block;" />
+                    </div>
+                    <div class="floating-contact-panel-item">
+                        <div class="floating-contact-panel-item-icon">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/chat.svg" alt="在线洽谈" />
+                        </div>
+                        <div>
+                            <div id="online-contact-btn" class="floating-contact-panel-item-title"
+                                style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;">在线接洽
+                            </div>
+                            <div class="floating-contact-panel-item-desc">点击跳转微信，快速沟通对接</div>
+                        </div>
+                    </div>
+                    <div class="floating-contact-panel-item">
+                        <div class="floating-contact-panel-item-icon">
+                            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/service.svg" alt="在线洽谈" />
+                        </div>
+                        <div>
+                            <div class="floating-contact-panel-item-title"
+                                style="color: #6C57FF; text-decoration: underline;text-underline-offset: 4px;"
+                                onclick="openSolutionModal()">预约咨询
+                            </div>
+                            <div class="floating-contact-panel-item-desc">留下您的联系方式，获取专属咨询服务</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="floating-contact-trigger" type="button" aria-expanded="false" aria-controls="floating-contact-panel"
+            aria-label="展开联系我们面板">
+            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/kefu.png" class="floating-contact-icon" alt="联系我们" />
+            <div class="floating-contact-text">联系我们</div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="successModal">
+        <div
+            style="width: 420px; height: 260px; border-radius: 16px; background-color: #FFF; position: relative; display: flex; flex-direction: column; align-items: center; z-index: 2; padding: 48px  0;">
+            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/success.svg"
+                style="width: 100%; height: 144px; position: absolute; z-index: 0; top: -24px" />
+            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSuccessModal()" />
+            <div style="position: relative; z-index: 1; height: 40px; line-height: 40px; font-size: 36px;">
+                <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/success1.svg" />
+            </div>
+            <div
+                style="position: relative; z-index: 1; margin-top: 24px; font-size: 16px; color: #232323; height: 20px; line-height: 20px;">
+                感谢您的咨询，我们将尽快联系您～</div>
+            <div onclick="closeSuccessModal()"
+                style="position: relative; z-index: 1; margin-top: 40px; height: 40px;
+background: linear-gradient( 90deg, #23B2FF 0%, #6C57FF 100%);
+border-radius: 8px 8px 8px 8px; width: 272px; text-align: center; line-height: 40px; font-weight: 600; color: #FFF; font-size: 16px; cursor: pointer;">
+                知道了</div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="solutionModal">
+        <div class="modal-container">
+            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/close.png"
+                style="width: 24px; height: 24px; position: absolute; right: 24px; top: 24px; display: block; cursor: pointer;"
+                onclick="closeSolutionModal()" />
+            <img src="https://prod-admin-1384634817.cos.ap-guangzhou.myqcloud.com/20251211/qdy/consult.png" style="width: 100%; height: 120px; border-radius: 16px 16px 0 0;" />
+            <form style="padding: 0 24px;" id="solutionForm">
+                <span style="height: 20px; line-height: 20px;  font-size: 14px;" class="require">1.企业全称</span>
+                <input id="userName" type="text" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
+                    autocomplete="off" required />
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">2.手机号</span>
+                <input id="userPhone" type="number" class="modal-input" style="margin-top: 8px;" placeholder="请输入"
+                    autocomplete="off" required />
+                <span style="height: 20px; line-height: 20px; margin-top: 24px; font-size: 14px;"
+                    class="require">3.您希望解决什么问题？</span>
+                <textarea id="userMessage" type="text" class="modal-input"
+                    style="margin-top: 8px; resize: none; height: 100px; line-height: 20px; padding: 10px 12px; "
+                    placeholder="请输入" autocomplete="off"></textarea>
+                <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+                    <button onclick="closeSolutionModal()"
+                        style="width: 88px ; height: 40px; background: #fff; color: #696969; border: 1px solid #E4E4E4;"
+                        class="modal-submit-btn" type="button">取消</button>
+                    <button style="width: 272px ; height: 40px;" class="modal-submit-btn" id="submitBtn">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
