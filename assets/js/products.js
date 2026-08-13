@@ -701,6 +701,9 @@ function normalizeProductItem(item, index) {
     );
 
     const imageUrl = pickFirstValue(
+        item.titleBackgroundImage && item.titleBackgroundImage[0]
+            ? resolveMediaValue(item.titleBackgroundImage[0].url)
+            : "",
         item.contentImage && item.contentImage[0]
             ? resolveMediaValue(item.contentImage[0].url)
             : "",
@@ -709,7 +712,6 @@ function normalizeProductItem(item, index) {
         resolveMediaValue(item.image),
         resolveMediaValue(item.banner),
         resolveMediaValue(item.background),
-        resolveMediaValue(item.titleBackgroundImage),
         resolveMediaValue(item.coverImage),
         resolveMediaValue(item.imageList)
     );
